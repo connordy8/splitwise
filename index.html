@@ -197,6 +197,30 @@
     .screen { display: none; flex-direction: column; flex: 1; position: relative; z-index: 1; }
     .screen.active { display: flex; }
 
+    /* ═══ CUSTOM SPLIT ═══ */
+    .custom-split-row { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
+    .custom-split-input-wrap { flex: 1; text-align: center; }
+    .custom-split-input-wrap label { font-size: 12px; color: var(--text-soft); display: block; margin-bottom: 4px; font-weight: 600; }
+    .custom-split-input { width: 100%; text-align: center; padding: 10px 8px; font-size: 16px; font-weight: 600; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; }
+    .custom-split-input:focus { border-color: var(--accent); }
+
+    /* ═══ SUMMARY SCREEN ═══ */
+    .summary-sheet-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--accent); background: var(--accent-soft); margin-bottom: 20px; transition: all 0.15s ease; }
+    .summary-sheet-link:active { transform: scale(0.98); }
+    .expense-list { display: flex; flex-direction: column; gap: 8px; }
+    .expense-item { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); }
+    .expense-item .ei-amount { font-family: var(--font-display); font-size: 17px; font-weight: 600; white-space: nowrap; }
+    .expense-item .ei-details { flex: 1; min-width: 0; }
+    .expense-item .ei-desc { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .expense-item .ei-meta { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
+    .expense-item .ei-split-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+    .summary-empty { text-align: center; padding: 40px 20px; color: var(--text-soft); }
+    .summary-empty .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .summary-empty p { font-size: 14px; line-height: 1.5; }
+
+    /* ═══ SWIPE HINT ═══ */
+    .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-soft); font-size: 12px; margin-top: 16px; opacity: 0.6; }
+
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -242,6 +266,29 @@
         </div>
       </div>
       <div id="home-sheet-link"></div>
+      <div class="swipe-hint">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        Swipe right for expense summary
+      </div>
+    </div>
+
+    <!-- ═══ EXPENSE SUMMARY ═══ -->
+    <div class="screen" id="screen-summary">
+      <div class="header">
+        <div class="header-left">
+          <button class="btn-icon" onclick="showScreen('home')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <h1 class="small">Boo Bills Summary</h1>
+        </div>
+      </div>
+      <div id="summary-sheet-link-area"></div>
+      <div id="summary-balance"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div class="section-label" style="margin-bottom:0">Recent Expenses</div>
+        <button class="balance-refresh" onclick="refreshSummary()" style="font-size:12px;padding:4px 8px;border-radius:6px;border:none;background:none;color:var(--text-soft);cursor:pointer">↻ Refresh</button>
+      </div>
+      <div id="summary-expenses">
+        <div class="balance-loading">Loading expenses<span class="dots"></span></div>
+      </div>
     </div>
 
     <!-- ═══ BOO BILLS ═══ -->
@@ -266,6 +313,14 @@
           <div class="radio"></div>
           <div><div class="opt-title">80 / 20 Split</div><div class="opt-sub">Connor 80% · Spencer 20%</div></div>
         </button>
+        <button class="split-option" onclick="startAmount('boobills','50/50')">
+          <div class="radio"></div>
+          <div><div class="opt-title">50 / 50 Split</div><div class="opt-sub">Connor 50% · Spencer 50%</div></div>
+        </button>
+        <button class="split-option" onclick="startCustomSplit()">
+          <div class="radio"></div>
+          <div><div class="opt-title">Custom Split</div><div class="opt-sub">Set your own percentages</div></div>
+        </button>
         <button class="split-option" onclick="startAmount('boobills','Connor owes Spencer')">
           <div class="radio"></div>
           <div><div class="opt-title">Connor owes Spencer 100%</div><div class="opt-sub">Connor pays the full amount</div></div>
@@ -274,6 +329,19 @@
           <div class="radio"></div>
           <div><div class="opt-title">Spencer owes Connor 100%</div><div class="opt-sub">Spencer pays the full amount</div></div>
         </button>
+        <div id="custom-split-area" style="display:none">
+          <div class="custom-split-row">
+            <div class="custom-split-input-wrap">
+              <label>Connor %</label>
+              <input type="number" inputmode="decimal" id="custom-connor-pct" class="custom-split-input" value="50" min="0" max="100" oninput="syncCustomSplit('connor')">
+            </div>
+            <div class="custom-split-input-wrap">
+              <label>Spencer %</label>
+              <input type="number" inputmode="decimal" id="custom-spencer-pct" class="custom-split-input" value="50" min="0" max="100" oninput="syncCustomSplit('spencer')">
+            </div>
+          </div>
+          <button class="btn-primary mt-8" onclick="confirmCustomSplit()">Use This Split</button>
+        </div>
       </div>
     </div>
 
@@ -382,10 +450,65 @@
     var expenseType = null, splitType = null, paidBy = 'Connor';
     var scriptUrl = '', sheetUrl = '';
     var cachedBalances = null;
+    var customConnorPct = 50, customSpencerPct = 50;
 
     function init() {
       try { scriptUrl = localStorage.getItem('boobills_script_url') || ''; sheetUrl = localStorage.getItem('boobills_sheet_url') || ''; } catch(e) {}
       updateHomeWarning(); updateHomeSheetLink();
+      initSwipeGesture();
+    }
+
+    // ═══ SWIPE GESTURE ═══
+    function initSwipeGesture() {
+      var homeScreen = document.getElementById('screen-home');
+      var touchStartX = 0, touchStartY = 0, swiping = false;
+      homeScreen.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        swiping = true;
+      }, { passive: true });
+      homeScreen.addEventListener('touchmove', function(e) {
+        // allow natural scroll
+      }, { passive: true });
+      homeScreen.addEventListener('touchend', function(e) {
+        if (!swiping) return;
+        swiping = false;
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        // Swipe right: dx > 80px and more horizontal than vertical
+        if (dx > 80 && Math.abs(dy) < Math.abs(dx) * 0.7) {
+          showScreen('summary');
+        }
+      }, { passive: true });
+    }
+
+    // ═══ CUSTOM SPLIT ═══
+    function startCustomSplit() {
+      var area = document.getElementById('custom-split-area');
+      area.style.display = area.style.display === 'none' ? 'block' : 'none';
+    }
+    function syncCustomSplit(source) {
+      var connorEl = document.getElementById('custom-connor-pct');
+      var spencerEl = document.getElementById('custom-spencer-pct');
+      if (source === 'connor') {
+        var v = parseFloat(connorEl.value) || 0;
+        if (v > 100) { v = 100; connorEl.value = 100; }
+        spencerEl.value = Math.max(0, +(100 - v).toFixed(2));
+      } else {
+        var v = parseFloat(spencerEl.value) || 0;
+        if (v > 100) { v = 100; spencerEl.value = 100; }
+        connorEl.value = Math.max(0, +(100 - v).toFixed(2));
+      }
+    }
+    function confirmCustomSplit() {
+      customConnorPct = parseFloat(document.getElementById('custom-connor-pct').value) || 0;
+      customSpencerPct = parseFloat(document.getElementById('custom-spencer-pct').value) || 0;
+      if (customConnorPct + customSpencerPct !== 100) {
+        customSpencerPct = 100 - customConnorPct;
+      }
+      document.getElementById('custom-split-area').style.display = 'none';
+      var label = Math.round(customConnorPct) + '/' + Math.round(customSpencerPct);
+      startAmount('boobills', 'Custom ' + label);
     }
 
     // ═══ BALANCE FETCHING (JSONP) ═══
@@ -485,6 +608,7 @@
       if (name === 'home') { updateHomeWarning(); updateHomeSheetLink(); }
       if (name === 'boobills') {
         paidBy = 'Connor'; updatePaidByUI();
+        document.getElementById('custom-split-area').style.display = 'none';
         var el = document.getElementById('boo-balance');
         if (cachedBalances) { renderBooBalance(el, cachedBalances); }
         else if (scriptUrl) {
@@ -499,6 +623,16 @@
           el.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
           fetchBalances(function(data) { renderMomBalance(el, data); });
         } else { el.innerHTML = ''; }
+      }
+      if (name === 'summary') {
+        updateSummarySheetLink();
+        var balEl = document.getElementById('summary-balance');
+        if (cachedBalances) { renderBooBalance(balEl, cachedBalances); }
+        else if (scriptUrl) {
+          balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
+          fetchBalances(function(data) { renderBooBalance(balEl, data); });
+        } else { balEl.innerHTML = ''; }
+        fetchExpenses();
       }
     }
 
@@ -555,6 +689,11 @@
       if (!val || val <= 0) { area.innerHTML = ''; return; }
       if ((expenseType === 'boobills' || expenseType === 'cdy') && splitType === '80/20') {
         area.innerHTML = '<div class="preview-split"><div class="person"><div class="label">Connor</div><div class="value">' + fmt(val * 0.8) + '</div></div><div class="divider"></div><div class="person"><div class="label">Spencer</div><div class="value">' + fmt(val * 0.2) + '</div></div></div>';
+      } else if ((expenseType === 'boobills') && splitType === '50/50') {
+        area.innerHTML = '<div class="preview-split"><div class="person"><div class="label">Connor</div><div class="value">' + fmt(val * 0.5) + '</div></div><div class="divider"></div><div class="person"><div class="label">Spencer</div><div class="value">' + fmt(val * 0.5) + '</div></div></div>';
+      } else if ((expenseType === 'boobills') && splitType && splitType.indexOf('Custom') === 0) {
+        var cPct = customConnorPct / 100, sPct = customSpencerPct / 100;
+        area.innerHTML = '<div class="preview-split"><div class="person"><div class="label">Connor (' + Math.round(customConnorPct) + '%)</div><div class="value">' + fmt(val * cPct) + '</div></div><div class="divider"></div><div class="person"><div class="label">Spencer (' + Math.round(customSpencerPct) + '%)</div><div class="value">' + fmt(val * sPct) + '</div></div></div>';
       } else if (expenseType === 'costco') {
         area.innerHTML = '<div class="preview-box"><div class="preview-title">This will log:</div><div class="row"><span class="rlabel">Mom owed</span><span class="rval">' + fmt(val) + '</span></div><div class="row"><span class="rlabel">Connor (80%)</span><span class="rval">' + fmt(val * 0.8) + '</span></div><div class="row"><span class="rlabel">Spencer (20%)</span><span class="rval">' + fmt(val * 0.2) + '</span></div></div>';
       } else { area.innerHTML = ''; }
@@ -580,6 +719,8 @@
       } else if (expenseType === 'boobills') {
         var entry = { sheet: 'Boo Bills', date: now, description: desc || 'Expense', amount: val, paidBy: paidBy, splitType: splitType };
         if (splitType === '80/20') { entry.connorOwes = +(val * 0.8).toFixed(2); entry.spencerOwes = +(val * 0.2).toFixed(2); }
+        else if (splitType === '50/50') { entry.connorOwes = +(val * 0.5).toFixed(2); entry.spencerOwes = +(val * 0.5).toFixed(2); }
+        else if (splitType && splitType.indexOf('Custom') === 0) { entry.connorOwes = +(val * customConnorPct / 100).toFixed(2); entry.spencerOwes = +(val * customSpencerPct / 100).toFixed(2); }
         else if (splitType === 'Connor owes Spencer') { entry.connorOwes = val; entry.spencerOwes = 0; }
         else { entry.connorOwes = 0; entry.spencerOwes = val; }
         entries.push(entry);
@@ -624,6 +765,74 @@
       var el = document.getElementById('home-sheet-link');
       el.innerHTML = sheetUrl ? '<a class="sheet-link" href="' + sheetUrl + '" target="_blank" rel="noopener noreferrer">View Google Sheet <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>' : '';
     }
+
+    // ═══ SUMMARY SCREEN ═══
+    function updateSummarySheetLink() {
+      var el = document.getElementById('summary-sheet-link-area');
+      el.innerHTML = sheetUrl ? '<a class="summary-sheet-link" href="' + sheetUrl + '" target="_blank" rel="noopener noreferrer"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg> Open Google Sheet</a>' : '';
+    }
+
+    function fetchExpenses() {
+      var container = document.getElementById('summary-expenses');
+      if (!scriptUrl) { container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚙️</div><p>Set your Apps Script URL in settings to view expenses.</p></div>'; return; }
+      container.innerHTML = '<div class="balance-loading">Loading expenses<span class="dots"></span></div>';
+
+      var cbName = 'bbexp_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      var timeout = setTimeout(function() {
+        delete window[cbName];
+        container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⏱</div><p>Timed out loading expenses. Tap refresh to try again.</p></div>';
+      }, 10000);
+
+      window[cbName] = function(data) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        renderExpenses(container, data);
+      };
+
+      var s = document.createElement('script');
+      s.src = scriptUrl + '?action=expenses&sheet=Boo+Bills&callback=' + cbName;
+      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load expenses. Your Apps Script may need updating to support the expenses endpoint.</p></div>'; };
+      document.head.appendChild(s);
+      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+    }
+
+    function renderExpenses(container, data) {
+      if (!data || !data.expenses || data.expenses.length === 0) {
+        container.innerHTML = '<div class="summary-empty"><div class="empty-icon">📋</div><p>No expenses yet. Start logging to see them here!</p></div>';
+        return;
+      }
+      var html = '<div class="expense-list">';
+      var expenses = data.expenses;
+      for (var i = 0; i < expenses.length; i++) {
+        var e = expenses[i];
+        var tagColor = 'tag-accent';
+        if (e.splitType && e.splitType.indexOf('Connor owes') >= 0) tagColor = 'tag-green';
+        else if (e.splitType && e.splitType.indexOf('Spencer owes') >= 0) tagColor = 'tag-purple';
+
+        html += '<div class="expense-item">' +
+          '<div>' +
+            '<div class="ei-amount">' + fmt(e.amount || 0) + '</div>' +
+          '</div>' +
+          '<div class="ei-details">' +
+            '<div class="ei-desc">' + escHtml(e.description || 'Expense') + '</div>' +
+            '<div class="ei-meta">' + escHtml(e.date || '') + ' · Paid by ' + escHtml(e.paidBy || '?') + '</div>' +
+          '</div>' +
+          '<div class="ei-split-tag tag ' + tagColor + '">' + escHtml(e.splitType || '') + '</div>' +
+        '</div>';
+      }
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function refreshSummary() {
+      cachedBalances = null;
+      var balEl = document.getElementById('summary-balance');
+      balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
+      fetchBalances(function(data) { renderBooBalance(balEl, data); });
+      fetchExpenses();
+    }
+
+    function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
     function fmt(n) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n); }
 
