@@ -300,7 +300,6 @@
         </div>
       </div>
       <div id="boo-balance"></div>
-      <div id="boo-links" style="display:flex;gap:8px;margin-bottom:20px"></div>
       <div class="paid-by-section">
         <div class="paid-by-label">Paid by</div>
         <div class="paid-by-toggle">
@@ -344,6 +343,7 @@
           <button class="btn-primary mt-8" onclick="confirmCustomSplit()">Use This Split</button>
         </div>
       </div>
+      <div id="boo-links" style="display:flex;gap:8px;margin-top:24px"></div>
     </div>
 
     <!-- ═══ MOM BILLS ═══ -->
@@ -772,7 +772,7 @@
       var el = document.getElementById('boo-links');
       var html = '<div onclick="showScreen(\'summary\')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:var(--radius-sm);border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer">' +
         '<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>' +
-        'Expense Summary</div>';
+        'Transactions</div>';
       if (sheetUrl) {
         html += '<a href="' + sheetUrl + '" target="_blank" rel="noopener noreferrer" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none">' +
           '<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>' +
