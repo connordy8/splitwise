@@ -589,7 +589,7 @@
     function refreshBooBalance() {
       var el = document.getElementById('boo-balance');
       el.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
-      fetchBalances(function(data) { renderBooBalance(el, data); });
+      fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(el, data); });
     }
 
     function refreshMomBalance() {
@@ -612,10 +612,9 @@
         document.getElementById('custom-split-area').style.display = 'none';
         updateBooLinks();
         var el = document.getElementById('boo-balance');
-        if (cachedBalances) { renderBooBalance(el, cachedBalances); }
-        else if (scriptUrl) {
+        if (scriptUrl) {
           el.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
-          fetchBalances(function(data) { renderBooBalance(el, data); });
+          fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(el, data); });
         } else { el.innerHTML = ''; }
       }
       if (name === 'mom') {
@@ -629,10 +628,9 @@
       if (name === 'summary') {
         updateSummarySheetLink();
         var balEl = document.getElementById('summary-balance');
-        if (cachedBalances) { renderBooBalance(balEl, cachedBalances); }
-        else if (scriptUrl) {
+        if (scriptUrl) {
           balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
-          fetchBalances(function(data) { renderBooBalance(balEl, data); });
+          fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(balEl, data); });
         } else { balEl.innerHTML = ''; }
         fetchExpenses();
       }
@@ -768,6 +766,62 @@
       el.innerHTML = sheetUrl ? '<a class="sheet-link" href="' + sheetUrl + '" target="_blank" rel="noopener noreferrer">View Google Sheet <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>' : '';
     }
 
+    // ═══ CALCULATE BOO BALANCE FROM EXPENSES ═══
+    function fetchExpensesForBalance(callback) {
+      if (!scriptUrl) { callback(null); return; }
+      var cbName = 'bbbal_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      var timeout = setTimeout(function() {
+        delete window[cbName];
+        callback(null);
+      }, 10000);
+      window[cbName] = function(data) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        callback(data);
+      };
+      var s = document.createElement('script');
+      s.src = scriptUrl + '?action=expenses&sheet=Boo+Bills&callback=' + cbName;
+      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; callback(null); };
+      document.head.appendChild(s);
+      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+    }
+
+    function renderBooBalanceFromExpenses(container, data) {
+      if (!data || !data.expenses) {
+        container.innerHTML = '<div class="balance-card"><div class="balance-loading">Could not load balance</div></div>';
+        return;
+      }
+      var spencerOwesConnor = 0, connorOwesSpencer = 0;
+      for (var i = 0; i < data.expenses.length; i++) {
+        var e = data.expenses[i];
+        var paidBy = (e.paidBy || '').trim();
+        var connorOwes = parseFloat(e.connorOwes) || 0;
+        var spencerOwes = parseFloat(e.spencerOwes) || 0;
+        if (paidBy === 'Connor') spencerOwesConnor += spencerOwes;
+        else if (paidBy === 'Spencer') connorOwesSpencer += connorOwes;
+      }
+      spencerOwesConnor = Math.round(spencerOwesConnor * 100) / 100;
+      connorOwesSpencer = Math.round(connorOwesSpencer * 100) / 100;
+      var net = Math.round((spencerOwesConnor - connorOwesSpencer) * 100) / 100;
+      var netClass = net > 0 ? 'positive' : (net < 0 ? 'negative' : 'zero');
+      var netLabel = net > 0 ? 'Spencer owes Connor' : (net < 0 ? 'Connor owes Spencer' : 'All settled up!');
+      var netVal = Math.abs(net);
+
+      container.innerHTML =
+        '<div class="balance-card">' +
+          '<div class="balance-header"><span class="balance-title">Current Balance</span><button class="balance-refresh" onclick="refreshBooBalance()">↻ Refresh</button></div>' +
+          '<div class="balance-rows">' +
+            '<div class="balance-row"><span class="blabel">Spencer owes Connor</span><span class="bval">' + fmt(spencerOwesConnor) + '</span></div>' +
+            '<div class="balance-row"><span class="blabel">Connor owes Spencer</span><span class="bval">' + fmt(connorOwesSpencer) + '</span></div>' +
+          '</div>' +
+          '<div class="balance-divider"></div>' +
+          '<div class="balance-net ' + netClass + '">' +
+            '<span class="net-label">' + netLabel + '</span>' +
+            '<span class="net-val">' + (net === 0 ? '✓' : fmt(netVal)) + '</span>' +
+          '</div>' +
+        '</div>';
+    }
+
     function updateBooLinks() {
       var el = document.getElementById('boo-links');
       var html = '<div onclick="showScreen(\'summary\')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:var(--radius-sm);border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer">' +
@@ -840,10 +894,9 @@
     }
 
     function refreshSummary() {
-      cachedBalances = null;
       var balEl = document.getElementById('summary-balance');
       balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
-      fetchBalances(function(data) { renderBooBalance(balEl, data); });
+      fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(balEl, data); });
       fetchExpenses();
     }
 
