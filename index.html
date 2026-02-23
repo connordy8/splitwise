@@ -305,13 +305,11 @@
       </div>
       <div id="home-warning"></div>
       <div class="gap-10 mb-24">
-        <div class="card-badge-wrap">
-          <button class="expense-card" onclick="showScreen('boobills')">
-            <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-            <div style="flex:1"><div class="card-title">Boo Bills</div><div class="card-sub">Joint expenses — Connor & Spencer</div></div>
-            <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
-          </button>
-        </div>
+        <button class="expense-card" onclick="showScreen('bills')">
+          <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div style="flex:1"><div class="card-title">Bills</div><div class="card-sub">Boo Bills, Mom Bills & Quick Actions</div></div>
+          <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
+        </button>
         <div class="card-badge-wrap" id="tasks-badge-wrap">
           <button class="expense-card" onclick="showScreen('tasks')">
             <div class="icon-box" style="background:var(--blue-soft);color:var(--blue)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2 4-4"/></svg></div>
@@ -320,6 +318,27 @@
           </button>
           <div class="badge pulse" id="tasks-badge" style="display:none">0</div>
         </div>
+      </div>
+      <div id="home-outstanding-tasks">
+        <div class="section-label">Outstanding Tasks</div>
+        <div id="home-tasks-list"></div>
+      </div>
+    </div>
+
+    <!-- ═══ BILLS HUB ═══ -->
+    <div class="screen" id="screen-bills">
+      <div class="header">
+        <div class="header-left">
+          <button class="btn-icon" onclick="showScreen('home')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <h1 class="small">Bills</h1>
+        </div>
+      </div>
+      <div class="gap-10 mb-24">
+        <button class="expense-card" onclick="showScreen('boobills')">
+          <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div style="flex:1"><div class="card-title">Boo Bills</div><div class="card-sub">Joint expenses — Connor & Spencer</div></div>
+          <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
+        </button>
         <button class="expense-card" onclick="showScreen('mom')">
           <div class="icon-box" style="background:var(--green-soft);color:var(--green)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M9 10h.01M15 10h.01M8 14s1.5 2 4 2 4-2 4-2"/></svg></div>
           <div style="flex:1"><div class="card-title">Mom Bills</div><div class="card-sub">Expenses with Mom</div></div>
@@ -350,7 +369,7 @@
     <div class="screen" id="screen-summary">
       <div class="header">
         <div class="header-left">
-          <button class="btn-icon" onclick="showScreen('home')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="btn-icon" onclick="showScreen('bills')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
           <h1 class="small">Boo Bills Summary</h1>
         </div>
       </div>
@@ -369,7 +388,7 @@
     <div class="screen" id="screen-boobills">
       <div class="header">
         <div class="header-left">
-          <button class="btn-icon" onclick="showScreen('home')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="btn-icon" onclick="showScreen('bills')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
           <h1 class="small">Boo Bills</h1>
         </div>
       </div>
@@ -424,7 +443,7 @@
     <div class="screen" id="screen-mom">
       <div class="header">
         <div class="header-left">
-          <button class="btn-icon" onclick="showScreen('home')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="btn-icon" onclick="showScreen('bills')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
           <h1 class="small">Mom Bills</h1>
         </div>
       </div>
@@ -612,14 +631,15 @@
 
     function init() {
       try { scriptUrl = localStorage.getItem('boobills_script_url') || ''; sheetUrl = localStorage.getItem('boobills_sheet_url') || ''; } catch(e) {}
-      updateHomeWarning(); updateHomeSheetLink();
+      updateHomeWarning();
       initSwipeGesture();
       updateHomeBadges();
+      renderHomeOutstandingTasks();
     }
 
     // ═══ SWIPE GESTURE ═══
     function initSwipeGesture() {
-      var homeScreen = document.getElementById('screen-home');
+      var homeScreen = document.getElementById('screen-bills');
       var touchStartX = 0, touchStartY = 0, swiping = false;
       homeScreen.addEventListener('touchstart', function(e) {
         touchStartX = e.touches[0].clientX;
@@ -764,7 +784,8 @@
         document.getElementById('settings-script-url').value = scriptUrl;
         document.getElementById('settings-sheet-url').value = sheetUrl;
       }
-      if (name === 'home') { updateHomeWarning(); updateHomeSheetLink(); updateHomeBadges(); }
+      if (name === 'home') { updateHomeWarning(); updateHomeBadges(); renderHomeOutstandingTasks(); }
+      if (name === 'bills') { updateHomeSheetLink(); }
       if (name === 'tasks') { fetchTasks(); }
       if (name === 'task-new') { resetTaskForm(); }
       if (name === 'boobills') {
@@ -834,7 +855,7 @@
     function goBackFromAmount() {
       if (expenseType === 'boobills') showScreen('boobills');
       else if (expenseType === 'mom-owed' || expenseType === 'mom-owes') showScreen('mom');
-      else showScreen('home');
+      else showScreen('bills');
     }
 
     function resetApp() {
@@ -1089,12 +1110,77 @@
         } else {
           badge.style.display = 'none';
         }
+        renderHomeOutstandingTasks(data);
       };
       var s = document.createElement('script');
       s.src = scriptUrl + '?action=tasks&callback=' + cbName;
       s.onerror = function() { clearTimeout(timeout); delete window[cbName]; };
       document.head.appendChild(s);
       setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+    }
+
+    function renderHomeOutstandingTasks(data) {
+      data = data || cachedTasks;
+      var container = document.getElementById('home-tasks-list');
+      var section = document.getElementById('home-outstanding-tasks');
+      if (!data || !data.tasks) {
+        if (!scriptUrl) { section.style.display = 'none'; return; }
+        container.innerHTML = '<div style="color:var(--text-soft);font-size:14px;padding:8px 0">Loading...</div>';
+        return;
+      }
+      var today = new Date(); today.setHours(0,0,0,0);
+      var outstanding = [];
+      for (var i = 0; i < data.tasks.length; i++) {
+        var t = data.tasks[i];
+        if (t.status === 'Complete') continue;
+        outstanding.push(t);
+      }
+      if (outstanding.length === 0) {
+        section.style.display = 'block';
+        container.innerHTML = '<div style="color:var(--text-soft);font-size:14px;padding:8px 0">All caught up!</div>';
+        return;
+      }
+      // Sort: overdue first, then by priority, then deadline
+      var prioOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+      outstanding.sort(function(a, b) {
+        var aOverdue = a.deadline && new Date(a.deadline) < today;
+        var bOverdue = b.deadline && new Date(b.deadline) < today;
+        if (aOverdue && !bOverdue) return -1;
+        if (!aOverdue && bOverdue) return 1;
+        var ap = prioOrder[a.priority] || 1, bp = prioOrder[b.priority] || 1;
+        if (ap !== bp) return ap - bp;
+        if (a.deadline && b.deadline) return new Date(a.deadline) - new Date(b.deadline);
+        if (a.deadline) return -1;
+        if (b.deadline) return 1;
+        return 0;
+      });
+      section.style.display = 'block';
+      var html = '<div class="task-list">';
+      for (var i = 0; i < outstanding.length; i++) {
+        var t = outstanding[i];
+        var isOverdue = t.deadline && new Date(t.deadline) < today;
+        var itemClass = 'task-item' + (isOverdue ? ' overdue' : '');
+        var assignClass = t.assignedTo === 'Connor' ? 'connor' : (t.assignedTo === 'Spencer' ? 'spencer' : 'both');
+        var prioClass = (t.priority || 'Medium').toLowerCase();
+        var deadlineHtml = '';
+        if (t.deadline) {
+          var dl = new Date(t.deadline);
+          var dlStr = (dl.getMonth()+1) + '/' + dl.getDate() + '/' + dl.getFullYear();
+          deadlineHtml = '<span class="task-deadline' + (isOverdue ? ' overdue' : '') + '">' + (isOverdue ? '!! Overdue ' : '') + dlStr + '</span>';
+        }
+        html += '<div class="' + itemClass + '" onclick="showScreen(\'tasks\')" style="cursor:pointer">' +
+          '<div class="task-content">' +
+            '<div class="task-name">' + escHtml(t.task) + '</div>' +
+            '<div class="task-meta">' +
+              '<span class="task-assignee ' + assignClass + '">' + escHtml(t.assignedTo) + '</span>' +
+              '<span class="task-priority ' + prioClass + '">' + escHtml(t.priority || 'Medium') + '</span>' +
+              deadlineHtml +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }
+      html += '</div>';
+      container.innerHTML = html;
     }
 
     function fetchTasks() {
