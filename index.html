@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Boo Bills">
-  <title>Boo Bills</title>
+  <meta name="apple-mobile-web-app-title" content="Boo HQ">
+  <title>Boo HQ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -221,6 +221,70 @@
     /* ═══ SWIPE HINT ═══ */
     .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-soft); font-size: 12px; margin-top: 16px; opacity: 0.6; }
 
+    /* ═══ BADGE ═══ */
+    .card-badge-wrap { position: relative; flex: 1; }
+    .badge { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; border-radius: 11px; background: #E53935; color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 6px; z-index: 2; box-shadow: 0 2px 6px rgba(229,57,53,0.3); }
+    .badge.pulse { animation: badgePulse 1.5s ease-in-out infinite; }
+    @keyframes badgePulse { 0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(229,57,53,0.3); } 50% { transform: scale(1.15); box-shadow: 0 2px 12px rgba(229,57,53,0.5); } }
+
+    /* ═══ TASKS ═══ */
+    .task-filters { display: flex; gap: 6px; margin-bottom: 16px; }
+    .task-filter-btn { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-soft); transition: all 0.15s; }
+    .task-filter-btn.active { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+
+    .task-list { display: flex; flex-direction: column; gap: 8px; padding-bottom: 80px; }
+    .task-item { display: flex; align-items: flex-start; gap: 12px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); transition: all 0.2s; }
+    .task-item.overdue { border-color: #E53935; animation: taskOverdue 2s ease-in-out infinite; }
+    @keyframes taskOverdue { 0%, 100% { border-color: #E53935; box-shadow: 0 2px 12px rgba(229,57,53,0.08); } 50% { border-color: #EF5350; box-shadow: 0 2px 16px rgba(229,57,53,0.2); } }
+    .task-item.completed { opacity: 0.5; }
+    .task-item.completed .task-name { text-decoration: line-through; }
+
+    .task-checkbox { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 2px; }
+    .task-checkbox:active { transform: scale(0.9); }
+    .task-checkbox.checked { background: var(--green); border-color: var(--green); }
+    .task-checkbox.checked svg { display: block; }
+    .task-checkbox svg { display: none; }
+
+    .task-content { flex: 1; min-width: 0; }
+    .task-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .task-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .task-deadline { font-size: 12px; color: var(--text-soft); }
+    .task-deadline.overdue { color: #E53935; font-weight: 600; }
+    .task-assignee { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .task-assignee.connor { background: var(--accent-soft); color: var(--accent); }
+    .task-assignee.spencer { background: var(--blue-soft); color: var(--blue); }
+    .task-assignee.both { background: var(--purple-soft); color: var(--purple); }
+    .task-priority { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .task-priority.low { background: #F0F0F0; color: #888; }
+    .task-priority.medium { background: var(--blue-soft); color: var(--blue); }
+    .task-priority.high { background: #FFEBEE; color: #E53935; }
+    .task-notes { font-size: 12px; color: var(--text-soft); margin-top: 4px; line-height: 1.4; }
+
+    .fab { position: fixed; bottom: max(24px, env(safe-area-inset-bottom, 24px)); right: 50%; transform: translateX(calc(210px - 28px)); width: 56px; height: 56px; border-radius: 50%; background: var(--blue); color: white; border: none; box-shadow: 0 4px 16px rgba(74,111,165,0.35); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.15s; }
+    .fab:active { transform: translateX(calc(210px - 28px)) scale(0.92); }
+
+    .show-completed-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; color: var(--text-soft); font-size: 13px; cursor: pointer; border: none; background: none; font-family: var(--font); width: 100%; }
+
+    /* ═══ NEW TASK FORM ═══ */
+    .form-group { margin-bottom: 20px; }
+    .form-label { font-size: 13px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+    .form-input { width: 100%; padding: 14px 16px; font-size: 15px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--blue); }
+    .form-textarea { width: 100%; padding: 14px 16px; font-size: 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; resize: vertical; min-height: 80px; }
+    .form-textarea:focus { border-color: var(--blue); }
+    .assign-toggle { display: flex; gap: 8px; }
+    .assign-btn { flex: 1; padding: 12px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; color: var(--text); }
+    .assign-btn:active { transform: scale(0.98); }
+    .assign-btn.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+    .priority-toggle { display: flex; gap: 8px; }
+    .priority-btn { flex: 1; padding: 12px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; color: var(--text); }
+    .priority-btn:active { transform: scale(0.98); }
+    .priority-btn.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+    .notify-row { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+    .notify-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); background: var(--card); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .notify-checkbox.checked { background: var(--blue); border-color: var(--blue); }
+    .notify-label { font-size: 14px; font-weight: 500; }
+
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -234,18 +298,28 @@
     <!-- ═══ HOME ═══ -->
     <div class="screen active" id="screen-home">
       <div class="header">
-        <div class="header-left"><h1>Boo Bills</h1></div>
+        <div class="header-left"><h1>Boo HQ</h1></div>
         <button class="btn-icon muted" onclick="showScreen('settings')" aria-label="Settings">
           <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.32 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
       </div>
       <div id="home-warning"></div>
       <div class="gap-10 mb-24">
-        <button class="expense-card" onclick="showScreen('boobills')">
-          <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-          <div style="flex:1"><div class="card-title">Boo Bills</div><div class="card-sub">Joint expenses — Connor & Spencer</div></div>
-          <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
-        </button>
+        <div class="card-badge-wrap">
+          <button class="expense-card" onclick="showScreen('boobills')">
+            <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <div style="flex:1"><div class="card-title">Boo Bills</div><div class="card-sub">Joint expenses — Connor & Spencer</div></div>
+            <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
+          </button>
+        </div>
+        <div class="card-badge-wrap" id="tasks-badge-wrap">
+          <button class="expense-card" onclick="showScreen('tasks')">
+            <div class="icon-box" style="background:var(--blue-soft);color:var(--blue)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2 4-4"/></svg></div>
+            <div style="flex:1"><div class="card-title">Tasks</div><div class="card-sub">To-dos for Connor & Spencer</div></div>
+            <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
+          </button>
+          <div class="badge pulse" id="tasks-badge" style="display:none">0</div>
+        </div>
         <button class="expense-card" onclick="showScreen('mom')">
           <div class="icon-box" style="background:var(--green-soft);color:var(--green)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M9 10h.01M15 10h.01M8 14s1.5 2 4 2 4-2 4-2"/></svg></div>
           <div style="flex:1"><div class="card-title">Mom Bills</div><div class="card-sub">Expenses with Mom</div></div>
@@ -413,6 +487,87 @@
       </div>
     </div>
 
+    <!-- ═══ TASKS ═══ -->
+    <div class="screen" id="screen-tasks">
+      <div class="header">
+        <div class="header-left">
+          <button class="btn-icon" onclick="showScreen('home')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <h1 class="small">Tasks</h1>
+        </div>
+      </div>
+      <div class="task-filters">
+        <button class="task-filter-btn active" data-filter="all" onclick="setTaskFilter('all')">All</button>
+        <button class="task-filter-btn" data-filter="Connor" onclick="setTaskFilter('Connor')">Connor</button>
+        <button class="task-filter-btn" data-filter="Spencer" onclick="setTaskFilter('Spencer')">Spencer</button>
+        <button class="task-filter-btn" data-filter="Both" onclick="setTaskFilter('Both')">Both</button>
+      </div>
+      <div id="tasks-list">
+        <div class="balance-loading">Loading tasks<span class="dots"></span></div>
+      </div>
+      <button class="show-completed-toggle" id="show-completed-btn" onclick="toggleShowCompleted()">Show completed tasks</button>
+      <button class="fab" onclick="showScreen('task-new')">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+
+    <!-- ═══ NEW TASK ═══ -->
+    <div class="screen" id="screen-task-new">
+      <div class="header">
+        <div class="header-left">
+          <button class="btn-icon" onclick="showScreen('tasks')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <h1 class="small">New Task</h1>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Task name</label>
+        <input type="text" id="task-name-input" class="form-input" placeholder="What needs to be done?">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Assigned to</label>
+        <div class="assign-toggle">
+          <button class="assign-btn selected" id="assign-connor" onclick="setTaskAssign('Connor')">Connor</button>
+          <button class="assign-btn" id="assign-spencer" onclick="setTaskAssign('Spencer')">Spencer</button>
+          <button class="assign-btn" id="assign-both" onclick="setTaskAssign('Both')">Both</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Deadline (optional)</label>
+        <input type="date" id="task-deadline-input" class="form-input">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <div class="priority-toggle">
+          <button class="priority-btn" id="priority-low" onclick="setTaskPriority('Low')">Low</button>
+          <button class="priority-btn selected" id="priority-medium" onclick="setTaskPriority('Medium')">Medium</button>
+          <button class="priority-btn" id="priority-high" onclick="setTaskPriority('High')">High</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (optional)</label>
+        <textarea id="task-notes-input" class="form-textarea" placeholder="Any extra details..."></textarea>
+      </div>
+      <div class="form-group">
+        <div class="notify-row" onclick="toggleNotify()">
+          <div class="notify-checkbox" id="notify-checkbox">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span class="notify-label">Notify me when completed</span>
+        </div>
+      </div>
+      <div id="task-error-area"></div>
+      <button class="btn-primary blue" id="task-submit-btn" onclick="submitTask()">Create Task</button>
+    </div>
+
+    <!-- ═══ TASK SUCCESS ═══ -->
+    <div class="screen" id="screen-task-success">
+      <div class="vcenter center">
+        <div class="success-icon" style="background:var(--blue-soft);color:var(--blue)"><svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+        <div class="success-title">Task Created!</div>
+        <div class="success-msg" id="task-success-msg"></div>
+        <button class="btn-primary blue" onclick="showScreen('tasks')">View Tasks</button>
+      </div>
+    </div>
+
     <!-- ═══ SETTINGS ═══ -->
     <div class="screen" id="screen-settings">
       <div class="header">
@@ -452,11 +607,14 @@
     var scriptUrl = '', sheetUrl = '';
     var cachedBalances = null;
     var customConnorPct = 50, customSpencerPct = 50;
+    var cachedTasks = null, taskFilter = 'all', showCompleted = false;
+    var taskAssign = 'Connor', taskPriority = 'Medium', taskNotify = false;
 
     function init() {
       try { scriptUrl = localStorage.getItem('boobills_script_url') || ''; sheetUrl = localStorage.getItem('boobills_sheet_url') || ''; } catch(e) {}
       updateHomeWarning(); updateHomeSheetLink();
       initSwipeGesture();
+      updateHomeBadges();
     }
 
     // ═══ SWIPE GESTURE ═══
@@ -606,7 +764,9 @@
         document.getElementById('settings-script-url').value = scriptUrl;
         document.getElementById('settings-sheet-url').value = sheetUrl;
       }
-      if (name === 'home') { updateHomeWarning(); updateHomeSheetLink(); }
+      if (name === 'home') { updateHomeWarning(); updateHomeSheetLink(); updateHomeBadges(); }
+      if (name === 'tasks') { fetchTasks(); }
+      if (name === 'task-new') { resetTaskForm(); }
       if (name === 'boobills') {
         paidBy = 'Connor'; updatePaidByUI();
         document.getElementById('custom-split-area').style.display = 'none';
@@ -898,6 +1058,244 @@
       balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
       fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(balEl, data); });
       fetchExpenses();
+    }
+
+    // ═══ TASKS ═══
+    function updateHomeBadges() {
+      if (!scriptUrl) return;
+      var cbName = 'bbtasks_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      var timeout = setTimeout(function() { delete window[cbName]; }, 10000);
+      window[cbName] = function(data) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        if (!data || !data.tasks) return;
+        cachedTasks = data;
+        var today = new Date(); today.setHours(0,0,0,0);
+        var outstanding = 0, overdueCount = 0;
+        for (var i = 0; i < data.tasks.length; i++) {
+          var t = data.tasks[i];
+          if (t.status === 'Complete') continue;
+          outstanding++;
+          if (t.deadline) {
+            var dl = new Date(t.deadline); dl.setHours(0,0,0,0);
+            if (dl < today) overdueCount++;
+          }
+        }
+        var badge = document.getElementById('tasks-badge');
+        if (outstanding > 0) {
+          badge.textContent = outstanding;
+          badge.style.display = 'flex';
+          badge.className = overdueCount > 0 ? 'badge pulse' : 'badge';
+        } else {
+          badge.style.display = 'none';
+        }
+      };
+      var s = document.createElement('script');
+      s.src = scriptUrl + '?action=tasks&callback=' + cbName;
+      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; };
+      document.head.appendChild(s);
+      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+    }
+
+    function fetchTasks() {
+      var container = document.getElementById('tasks-list');
+      if (!scriptUrl) { container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚙️</div><p>Set your Apps Script URL in settings to use tasks.</p></div>'; return; }
+      container.innerHTML = '<div class="balance-loading">Loading tasks<span class="dots"></span></div>';
+      var cbName = 'bbtl_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      var timeout = setTimeout(function() { delete window[cbName]; container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⏱</div><p>Timed out. Tap to try again.</p></div>'; }, 10000);
+      window[cbName] = function(data) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        cachedTasks = data;
+        renderTasks(container, data);
+      };
+      var s = document.createElement('script');
+      s.src = scriptUrl + '?action=tasks&callback=' + cbName;
+      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load tasks. Your Apps Script may need updating.</p></div>'; };
+      document.head.appendChild(s);
+      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+    }
+
+    function renderTasks(container, data) {
+      if (!data || !data.tasks || data.tasks.length === 0) {
+        container.innerHTML = '<div class="summary-empty"><div class="empty-icon">✅</div><p>No tasks yet. Tap + to create one!</p></div>';
+        return;
+      }
+      var today = new Date(); today.setHours(0,0,0,0);
+      var filtered = [];
+      for (var i = 0; i < data.tasks.length; i++) {
+        var t = data.tasks[i];
+        if (t.status === 'Complete' && !showCompleted) continue;
+        if (taskFilter !== 'all' && t.assignedTo !== taskFilter) continue;
+        filtered.push(t);
+      }
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="summary-empty"><div class="empty-icon">📋</div><p>No tasks match this filter.</p></div>';
+        return;
+      }
+      // Sort: overdue first, then by deadline, then by priority
+      var prioOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+      filtered.sort(function(a, b) {
+        if (a.status === 'Complete' && b.status !== 'Complete') return 1;
+        if (a.status !== 'Complete' && b.status === 'Complete') return -1;
+        var aOverdue = a.deadline && new Date(a.deadline) < today && a.status !== 'Complete';
+        var bOverdue = b.deadline && new Date(b.deadline) < today && b.status !== 'Complete';
+        if (aOverdue && !bOverdue) return -1;
+        if (!aOverdue && bOverdue) return 1;
+        var ap = prioOrder[a.priority] || 1, bp = prioOrder[b.priority] || 1;
+        if (ap !== bp) return ap - bp;
+        if (a.deadline && b.deadline) return new Date(a.deadline) - new Date(b.deadline);
+        if (a.deadline) return -1;
+        if (b.deadline) return 1;
+        return 0;
+      });
+
+      var html = '<div class="task-list">';
+      for (var i = 0; i < filtered.length; i++) {
+        var t = filtered[i];
+        var isComplete = t.status === 'Complete';
+        var isOverdue = !isComplete && t.deadline && new Date(t.deadline) < today;
+        var itemClass = 'task-item' + (isOverdue ? ' overdue' : '') + (isComplete ? ' completed' : '');
+        var checkClass = 'task-checkbox' + (isComplete ? ' checked' : '');
+        var assignClass = t.assignedTo === 'Connor' ? 'connor' : (t.assignedTo === 'Spencer' ? 'spencer' : 'both');
+        var prioClass = (t.priority || 'Medium').toLowerCase();
+
+        var deadlineHtml = '';
+        if (t.deadline) {
+          var dl = new Date(t.deadline);
+          var dlStr = (dl.getMonth()+1) + '/' + dl.getDate() + '/' + dl.getFullYear();
+          deadlineHtml = '<span class="task-deadline' + (isOverdue ? ' overdue' : '') + '">' + (isOverdue ? '⚠ Overdue · ' : '📅 ') + dlStr + '</span>';
+        }
+
+        html += '<div class="' + itemClass + '">' +
+          '<div class="' + checkClass + '" onclick="completeTask(\'' + escHtml(t.id) + '\')">' +
+            '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' +
+          '</div>' +
+          '<div class="task-content">' +
+            '<div class="task-name">' + escHtml(t.task) + '</div>' +
+            '<div class="task-meta">' +
+              '<span class="task-assignee ' + assignClass + '">' + escHtml(t.assignedTo) + '</span>' +
+              '<span class="task-priority ' + prioClass + '">' + escHtml(t.priority || 'Medium') + '</span>' +
+              deadlineHtml +
+            '</div>' +
+            (t.notes ? '<div class="task-notes">' + escHtml(t.notes) + '</div>' : '') +
+          '</div>' +
+        '</div>';
+      }
+      html += '</div>';
+      container.innerHTML = html;
+
+      // Update show completed button text
+      var btn = document.getElementById('show-completed-btn');
+      var completedCount = 0;
+      for (var i = 0; i < data.tasks.length; i++) { if (data.tasks[i].status === 'Complete') completedCount++; }
+      btn.style.display = completedCount > 0 ? 'flex' : 'none';
+      btn.textContent = showCompleted ? 'Hide completed (' + completedCount + ')' : 'Show completed (' + completedCount + ')';
+    }
+
+    function setTaskFilter(filter) {
+      taskFilter = filter;
+      document.querySelectorAll('.task-filter-btn').forEach(function(b) {
+        b.className = 'task-filter-btn' + (b.getAttribute('data-filter') === filter ? ' active' : '');
+      });
+      if (cachedTasks) renderTasks(document.getElementById('tasks-list'), cachedTasks);
+    }
+
+    function toggleShowCompleted() {
+      showCompleted = !showCompleted;
+      if (cachedTasks) renderTasks(document.getElementById('tasks-list'), cachedTasks);
+    }
+
+    function completeTask(id) {
+      if (!scriptUrl || !id) return;
+      // Optimistically update UI
+      if (cachedTasks && cachedTasks.tasks) {
+        for (var i = 0; i < cachedTasks.tasks.length; i++) {
+          if (cachedTasks.tasks[i].id === id) {
+            cachedTasks.tasks[i].status = 'Complete';
+            cachedTasks.tasks[i].completedDate = new Date().toLocaleDateString('en-US');
+            break;
+          }
+        }
+        renderTasks(document.getElementById('tasks-list'), cachedTasks);
+      }
+      // POST to backend
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'completeTask', taskId: id })
+      });
+    }
+
+    // ═══ NEW TASK FORM ═══
+    function resetTaskForm() {
+      document.getElementById('task-name-input').value = '';
+      document.getElementById('task-deadline-input').value = '';
+      document.getElementById('task-notes-input').value = '';
+      document.getElementById('task-error-area').innerHTML = '';
+      taskAssign = 'Connor'; taskPriority = 'Medium'; taskNotify = false;
+      updateAssignUI(); updatePriorityUI(); updateNotifyUI();
+      setTimeout(function() { document.getElementById('task-name-input').focus(); }, 200);
+    }
+
+    function setTaskAssign(who) {
+      taskAssign = who; updateAssignUI();
+    }
+    function updateAssignUI() {
+      document.getElementById('assign-connor').className = 'assign-btn' + (taskAssign === 'Connor' ? ' selected' : '');
+      document.getElementById('assign-spencer').className = 'assign-btn' + (taskAssign === 'Spencer' ? ' selected' : '');
+      document.getElementById('assign-both').className = 'assign-btn' + (taskAssign === 'Both' ? ' selected' : '');
+    }
+
+    function setTaskPriority(p) {
+      taskPriority = p; updatePriorityUI();
+    }
+    function updatePriorityUI() {
+      document.getElementById('priority-low').className = 'priority-btn' + (taskPriority === 'Low' ? ' selected' : '');
+      document.getElementById('priority-medium').className = 'priority-btn' + (taskPriority === 'Medium' ? ' selected' : '');
+      document.getElementById('priority-high').className = 'priority-btn' + (taskPriority === 'High' ? ' selected' : '');
+    }
+
+    function toggleNotify() {
+      taskNotify = !taskNotify; updateNotifyUI();
+    }
+    function updateNotifyUI() {
+      var cb = document.getElementById('notify-checkbox');
+      cb.className = 'notify-checkbox' + (taskNotify ? ' checked' : '');
+    }
+
+    function submitTask() {
+      var name = document.getElementById('task-name-input').value.trim();
+      var deadline = document.getElementById('task-deadline-input').value;
+      var notes = document.getElementById('task-notes-input').value.trim();
+      var errorArea = document.getElementById('task-error-area');
+
+      if (!name) { errorArea.innerHTML = '<p class="error-msg">Please enter a task name</p>'; return; }
+      if (!scriptUrl) { errorArea.innerHTML = '<p class="error-msg">Set your Apps Script URL in settings first</p>'; return; }
+
+      var btn = document.getElementById('task-submit-btn');
+      btn.disabled = true; btn.textContent = 'Creating...'; errorArea.innerHTML = '';
+
+      // Determine creator (we assume the person using the app — we'll use a simple heuristic based on who's NOT assigned, or default to Connor)
+      var createdBy = 'Connor'; // Default — could be made configurable in settings
+
+      var taskData = {
+        action: 'addTask',
+        task: name,
+        assignedTo: taskAssign,
+        createdBy: createdBy,
+        deadline: deadline || '',
+        priority: taskPriority,
+        notes: notes,
+        notifyOnComplete: taskNotify
+      };
+
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(taskData) })
+      .then(function() {
+        cachedTasks = null;
+        document.getElementById('task-success-msg').textContent = '"' + name + '" assigned to ' + taskAssign + (deadline ? ' · Due ' + deadline : '');
+        showScreen('task-success');
+      }).catch(function() {
+        errorArea.innerHTML = '<p class="error-msg">Failed to create task. Check your connection.</p>';
+      }).finally(function() { btn.disabled = false; btn.textContent = 'Create Task'; });
     }
 
     function escHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
