@@ -8,109 +8,103 @@
   <meta name="apple-mobile-web-app-title" content="Boo HQ">
   <title>Boo HQ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     :root {
-      --bg: #FFF5F7; --card: #FFFFFF; --text: #2D2235; --text-soft: #9A8FA3;
-      --accent: #E8618C; --accent-soft: #FDE8EF;
-      --green: #4DAA8D; --green-soft: #E0F5ED;
-      --blue: #6B8DD6; --blue-soft: #E5ECFA;
-      --purple: #9B72CF; --purple-soft: #F0E5FA;
-      --border: #F0E4EB;
-      --shadow: 0 4px 20px rgba(232,97,140,0.08); --shadow-lg: 0 12px 40px rgba(232,97,140,0.14);
-      --radius: 20px; --radius-sm: 14px;
-      --font: 'DM Sans', 'Avenir', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-display: 'Nunito', 'Avenir', sans-serif;
+      --bg: #F7F7F8; --card: #FFFFFF; --text: #1A1D26; --text-soft: #6B7280;
+      --accent: #E8618C; --accent-soft: #FDF2F5;
+      --green: #0D9373; --green-soft: #ECFDF5;
+      --blue: #635BFF; --blue-soft: #F0EFFE;
+      --purple: #7C5CFC; --purple-soft: #F3F0FF;
+      --border: #E5E7EB;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-lg: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-xl: 0 8px 24px rgba(0,0,0,0.08);
+      --radius: 12px; --radius-sm: 10px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
-    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
     .app {
       width: 100%; max-width: 420px; min-height: 100vh;
-      padding: 24px 20px;
-      padding-top: max(24px, env(safe-area-inset-top, 24px));
-      padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
+      padding: 20px 16px;
+      padding-top: max(20px, env(safe-area-inset-top, 20px));
+      padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
       display: flex; flex-direction: column; position: relative;
     }
-    .bg-decor { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(ellipse at 20% 0%, rgba(232,97,140,0.10) 0%, transparent 50%), radial-gradient(ellipse at 80% 100%, rgba(155,114,207,0.08) 0%, transparent 50%), radial-gradient(ellipse at 60% 30%, rgba(107,141,214,0.06) 0%, transparent 40%); }
-    .bg-decor::before { content: '💗'; position: absolute; top: 8%; left: 6%; font-size: 18px; opacity: 0.15; animation: floatA 8s ease-in-out infinite; }
-    .bg-decor::after { content: '✨'; position: absolute; bottom: 15%; right: 8%; font-size: 16px; opacity: 0.12; animation: floatB 10s ease-in-out infinite; }
-    .bg-float { position: absolute; border-radius: 50%; opacity: 0.4; filter: blur(1px); pointer-events: none; }
-    .bg-float-1 { width: 8px; height: 8px; background: var(--accent); top: 25%; right: 15%; animation: floatA 12s ease-in-out infinite; }
-    .bg-float-2 { width: 6px; height: 6px; background: var(--purple); top: 60%; left: 10%; animation: floatB 15s ease-in-out infinite; }
-    .bg-float-3 { width: 10px; height: 10px; background: #F4845F; bottom: 30%; right: 25%; animation: floatA 9s ease-in-out infinite reverse; }
-    @keyframes floatA { 0%, 100% { transform: translateY(0) rotate(0deg); } 33% { transform: translateY(-15px) rotate(5deg); } 66% { transform: translateY(8px) rotate(-3deg); } }
-    @keyframes floatB { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(10px, -12px); } 50% { transform: translate(-5px, -20px); } 75% { transform: translate(8px, -8px); } }
+    .bg-decor { position: fixed; top: 0; left: 0; right: 0; height: 280px; pointer-events: none; z-index: 0; background: linear-gradient(180deg, rgba(99,91,255,0.04) 0%, transparent 100%); }
+    .bg-float { display: none; }
 
     .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; position: relative; z-index: 1; }
     .header-left { display: flex; align-items: center; gap: 12px; }
-    .header h1 { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
-    .header h1.small { font-size: 22px; }
+    .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+    .header h1.small { font-size: 20px; }
 
     .btn-icon { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); box-shadow: var(--shadow); transition: all 0.15s ease; }
-    .btn-icon:active { transform: scale(0.95); }
+    .btn-icon:active { transform: scale(0.95); background: var(--bg); }
     .btn-icon.muted { color: var(--text-soft); }
 
-    .btn-primary { background: linear-gradient(135deg, var(--accent), #F2749C); color: white; border: none; border-radius: var(--radius-sm); padding: 18px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font); width: 100%; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 4px 16px rgba(232,97,140,0.25); }
-    .btn-primary:active { transform: scale(0.95); }
-    .btn-primary:disabled { opacity: 0.7; cursor: wait; }
-    .btn-primary.green { background: linear-gradient(135deg, var(--green), #5EC4A0); box-shadow: 0 4px 16px rgba(77,170,141,0.25); }
-    .btn-primary.blue { background: linear-gradient(135deg, var(--blue), #8BA8E8); box-shadow: 0 4px 16px rgba(107,141,214,0.25); }
-    .btn-primary.purple { background: linear-gradient(135deg, var(--purple), #B48FE0); box-shadow: 0 4px 16px rgba(155,114,207,0.25); }
+    .btn-primary { background: var(--blue); color: white; border: none; border-radius: var(--radius-sm); padding: 14px 20px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); width: 100%; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(99,91,255,0.3), 0 4px 12px rgba(99,91,255,0.15); }
+    .btn-primary:hover { filter: brightness(1.05); }
+    .btn-primary:active { transform: scale(0.98); filter: brightness(0.95); }
+    .btn-primary:disabled { opacity: 0.6; cursor: wait; }
+    .btn-primary.green { background: var(--green); box-shadow: 0 1px 3px rgba(13,147,115,0.3), 0 4px 12px rgba(13,147,115,0.15); }
+    .btn-primary.blue { background: var(--blue); }
+    .btn-primary.purple { background: var(--purple); box-shadow: 0 1px 3px rgba(124,92,252,0.3), 0 4px 12px rgba(124,92,252,0.15); }
 
-    .btn-secondary { display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--card); color: var(--text); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); text-decoration: none; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .btn-secondary:active { transform: scale(0.95); }
+    .btn-secondary { display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 20px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); text-decoration: none; transition: all 0.15s ease; box-shadow: var(--shadow); }
+    .btn-secondary:active { transform: scale(0.98); background: var(--bg); }
 
-    .expense-card { display: flex; align-items: center; gap: 16px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px 22px; cursor: pointer; width: 100%; text-align: left; box-shadow: var(--shadow); transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .expense-card:active { transform: scale(0.96); }
-    @media (hover: hover) { .expense-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); } }
-    .expense-card .icon-box { width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 -2px 8px rgba(0,0,0,0.04); }
-    .expense-card .card-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; letter-spacing: -0.01em; }
+    .expense-card { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; cursor: pointer; width: 100%; text-align: left; box-shadow: var(--shadow); transition: all 0.2s ease; }
+    .expense-card:active { transform: scale(0.98); }
+    @media (hover: hover) { .expense-card:hover { box-shadow: var(--shadow-lg); border-color: #D1D5DB; } }
+    .expense-card .icon-box { width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .expense-card .card-title { font-size: 15px; font-weight: 600; margin-bottom: 1px; letter-spacing: -0.01em; }
     .expense-card .card-sub { font-size: 13px; color: var(--text-soft); line-height: 1.3; }
-    .expense-card .chevron { color: var(--text-soft); opacity: 0.4; flex-shrink: 0; }
+    .expense-card .chevron { color: var(--text-soft); opacity: 0.3; flex-shrink: 0; }
 
-    .split-option { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1.5px solid var(--border); border-left: 3px solid transparent; border-radius: var(--radius-sm); padding: 16px 18px; cursor: pointer; width: 100%; text-align: left; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .split-option:active { transform: scale(0.97); border-left-color: var(--accent); }
-    .split-option .radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
-    .split-option .opt-title { font-size: 15px; font-weight: 600; }
+    .split-option { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; cursor: pointer; width: 100%; text-align: left; transition: all 0.15s ease; }
+    .split-option:active { background: var(--bg); }
+    .split-option .radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
+    .split-option .opt-title { font-size: 14px; font-weight: 600; }
     .split-option .opt-sub { font-size: 12px; color: var(--text-soft); margin-top: 1px; }
 
     .paid-by-section { margin-bottom: 24px; }
-    .paid-by-label { font-size: 13px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-    .paid-by-toggle { display: flex; gap: 8px; }
-    .paid-by-btn { flex: 1; padding: 14px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); color: var(--text); }
-    .paid-by-btn:active { transform: scale(0.95); }
-    .paid-by-btn.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .paid-by-label { font-size: 12px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .paid-by-toggle { display: flex; gap: 6px; }
+    .paid-by-btn { flex: 1; padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s ease; color: var(--text-soft); }
+    .paid-by-btn:active { transform: scale(0.97); }
+    .paid-by-btn.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
 
-    .quick-card { display: flex; align-items: center; gap: 14px; border: none; border-radius: var(--radius); padding: 18px 20px; cursor: pointer; width: 100%; text-align: left; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); color: white; }
-    .quick-card:active { transform: scale(0.96); }
-    @media (hover: hover) { .quick-card:hover { transform: translateY(-3px); } }
-    .quick-card .icon-box { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .quick-card .card-title { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-    .quick-card .card-sub { font-size: 12px; opacity: 0.85; }
-    .quick-costco { background: linear-gradient(135deg, #6B8DD6, #8BA8E8); box-shadow: 0 6px 20px rgba(107,141,214,0.30); }
-    .quick-cdy { background: linear-gradient(135deg, #E8618C, #F4845F); box-shadow: 0 6px 20px rgba(232,97,140,0.30); }
+    .quick-card { display: flex; align-items: center; gap: 14px; border: none; border-radius: var(--radius); padding: 16px 18px; cursor: pointer; width: 100%; text-align: left; transition: all 0.15s ease; color: white; }
+    .quick-card:active { transform: scale(0.98); filter: brightness(0.95); }
+    @media (hover: hover) { .quick-card:hover { filter: brightness(1.05); } }
+    .quick-card .icon-box { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .quick-card .card-title { font-size: 15px; font-weight: 600; margin-bottom: 1px; }
+    .quick-card .card-sub { font-size: 12px; opacity: 0.8; }
+    .quick-costco { background: var(--blue); box-shadow: 0 2px 8px rgba(99,91,255,0.25); }
+    .quick-cdy { background: linear-gradient(135deg, var(--accent), #D4507A); box-shadow: 0 2px 8px rgba(232,97,140,0.25); }
 
     /* ═══ BALANCE CARD ═══ */
     .balance-card {
-      background: var(--card); border: 1.5px solid var(--border);
-      border-top: 3px solid var(--accent);
+      background: var(--card); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 20px;
-      box-shadow: var(--shadow); margin-bottom: 24px;
-      animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: var(--shadow); margin-bottom: 20px;
+      animation: slideUp 0.3s ease;
     }
     .balance-card .balance-header {
       display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
     }
     .balance-card .balance-title {
-      font-size: 11px; font-weight: 600; color: var(--text-soft);
-      text-transform: uppercase; letter-spacing: 0.08em;
+      font-size: 12px; font-weight: 600; color: var(--text-soft);
+      text-transform: uppercase; letter-spacing: 0.06em;
     }
     .balance-card .balance-refresh {
       background: none; border: none; color: var(--text-soft); cursor: pointer;
       font-size: 12px; font-family: var(--font); padding: 4px 8px;
       border-radius: 6px; transition: all 0.15s;
     }
-    .balance-card .balance-refresh:active { background: var(--border); }
+    .balance-card .balance-refresh:active { background: var(--bg); }
     .balance-card .balance-rows { display: flex; flex-direction: column; gap: 8px; }
     .balance-card .balance-row {
       display: flex; justify-content: space-between; align-items: center;
@@ -118,18 +112,18 @@
     }
     .balance-card .balance-row .blabel { color: var(--text-soft); }
     .balance-card .balance-row .bval { font-weight: 600; font-size: 15px; }
-    .balance-card .balance-divider { height: 1px; background: var(--border); margin: 8px 0; }
+    .balance-card .balance-divider { height: 1px; background: var(--border); margin: 10px 0; }
     .balance-card .balance-net {
       display: flex; justify-content: space-between; align-items: center;
       padding: 12px 16px; border-radius: var(--radius-sm); margin-top: 4px;
     }
-    .balance-net .net-label { font-weight: 700; font-size: 14px; }
-    .balance-net .net-val { font-weight: 700; font-size: 20px; font-family: var(--font-display); }
-    .balance-net.positive { background: #FFF0F3; color: var(--accent); }
+    .balance-net .net-label { font-weight: 600; font-size: 14px; }
+    .balance-net .net-val { font-weight: 700; font-size: 22px; letter-spacing: -0.02em; }
+    .balance-net.positive { background: var(--accent-soft); color: var(--accent); }
     .balance-net.negative { background: var(--green-soft); color: var(--green); }
-    .balance-net.zero { background: #F5F0FA; color: var(--purple); }
+    .balance-net.zero { background: var(--purple-soft); color: var(--purple); }
     .balance-loading {
-      text-align: center; padding: 16px; color: var(--text-soft); font-size: 13px;
+      text-align: center; padding: 20px; color: var(--text-soft); font-size: 13px;
     }
     .balance-loading .dots::after {
       content: ''; animation: dots 1.5s steps(4, end) infinite;
@@ -137,63 +131,63 @@
     @keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
 
     .amount-area { text-align: center; }
-    .amount-label { font-size: 13px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+    .amount-label { font-size: 12px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; }
     .amount-wrap { position: relative; margin-top: 12px; display: inline-block; }
-    .dollar-sign { position: absolute; left: -28px; top: 50%; transform: translateY(-50%); font-size: 42px; font-weight: 300; color: var(--text-soft); opacity: 0.5; font-family: var(--font-display); }
-    .amount-input { width: 200px; text-align: center; font-size: 48px; font-weight: 300; font-family: var(--font-display); border: none; border-bottom: 2px solid var(--border); background: transparent; outline: none; padding: 8px 0; color: var(--text); transition: border-color 0.2s; }
-    .amount-input:focus { border-bottom-color: var(--accent); }
+    .dollar-sign { position: absolute; left: -28px; top: 50%; transform: translateY(-50%); font-size: 40px; font-weight: 300; color: var(--text-soft); opacity: 0.4; }
+    .amount-input { width: 200px; text-align: center; font-size: 48px; font-weight: 300; font-family: var(--font); border: none; border-bottom: 2px solid var(--border); background: transparent; outline: none; padding: 8px 0; color: var(--text); transition: border-color 0.2s; letter-spacing: -0.02em; }
+    .amount-input:focus { border-bottom-color: var(--blue); }
     .amount-input.green:focus { border-bottom-color: var(--green); }
     .amount-input.blue:focus { border-bottom-color: var(--blue); }
     .amount-input.purple:focus { border-bottom-color: var(--purple); }
 
-    .desc-input { width: 100%; max-width: 280px; text-align: center; padding: 12px 16px; font-size: 15px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; }
-    .desc-input:focus { border-color: var(--accent); }
-    .desc-input.green:focus { border-color: var(--green); }
-    .desc-input.blue:focus { border-color: var(--blue); }
-    .desc-input.purple:focus { border-color: var(--purple); }
+    .desc-input { width: 100%; max-width: 280px; text-align: center; padding: 12px 16px; font-size: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .desc-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .desc-input.green:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(13,147,115,0.1); }
+    .desc-input.blue:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .desc-input.purple:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
 
-    .preview-split { display: flex; justify-content: center; gap: 24px; padding: 12px 0; animation: fadeIn 0.3s ease; }
+    .preview-split { display: flex; justify-content: center; gap: 24px; padding: 12px 0; animation: fadeIn 0.2s ease; }
     .preview-split .person { text-align: center; }
     .preview-split .label { font-size: 12px; color: var(--text-soft); margin-bottom: 2px; }
-    .preview-split .value { font-size: 17px; font-weight: 600; }
+    .preview-split .value { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
     .preview-split .divider { width: 1px; background: var(--border); }
 
-    .preview-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; max-width: 300px; margin: 0 auto; width: 100%; animation: fadeIn 0.3s ease; }
-    .preview-box .preview-title { font-size: 12px; color: var(--text-soft); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .preview-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; max-width: 300px; margin: 0 auto; width: 100%; animation: fadeIn 0.2s ease; }
+    .preview-box .preview-title { font-size: 11px; color: var(--text-soft); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
     .preview-box .row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
     .preview-box .row:last-child { margin-bottom: 0; }
     .preview-box .row .rlabel { color: var(--text-soft); }
     .preview-box .row .rval { font-weight: 600; }
 
-    .tag { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+    .tag { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
     .tag-accent { background: var(--accent-soft); color: var(--accent); }
     .tag-blue { background: var(--blue-soft); color: var(--blue); }
     .tag-green { background: var(--green-soft); color: var(--green); }
     .tag-purple { background: var(--purple-soft); color: var(--purple); }
 
-    .success-icon { width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, var(--green-soft), #C8F5DC); color: var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 8px 32px rgba(77,170,141,0.20); }
-    .success-title { font-family: var(--font-display); font-size: 26px; font-weight: 800; margin-bottom: 8px; }
-    .success-msg { color: var(--text-soft); font-size: 15px; margin-bottom: 32px; line-height: 1.5; }
+    .success-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--green-soft); color: var(--green); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .success-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .success-msg { color: var(--text-soft); font-size: 14px; margin-bottom: 32px; line-height: 1.5; }
 
-    .settings-label { font-size: 13px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; display: block; }
-    .settings-input { width: 100%; padding: 14px 16px; font-size: 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; }
-    .settings-input:focus { border-color: var(--accent); }
+    .settings-label { font-size: 12px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; display: block; }
+    .settings-input { width: 100%; padding: 12px 14px; font-size: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .settings-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
     .settings-hint { font-size: 12px; color: var(--text-soft); margin-top: 6px; line-height: 1.4; }
 
     .setup-box { background: var(--blue-soft); border-radius: var(--radius-sm); padding: 16px; margin-top: 8px; }
     .setup-box .setup-title { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 8px; }
-    .setup-box ol { font-size: 12px; color: var(--blue); margin: 0; padding-left: 16px; line-height: 1.6; }
+    .setup-box ol { font-size: 12px; color: var(--blue); margin: 0; padding-left: 16px; line-height: 1.7; }
 
-    .warning-box { background: #FFF3E0; border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border: 1px solid #FFE0B2; }
-    .warning-box p { font-size: 13px; color: #E65100; line-height: 1.4; }
+    .warning-box { background: #FFFBEB; border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border: 1px solid #FDE68A; }
+    .warning-box p { font-size: 13px; color: #92400E; line-height: 1.4; }
 
-    .error-msg { color: #D44; font-size: 13px; text-align: center; }
-    .section-label { font-size: 11px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+    .error-msg { color: #DC2626; font-size: 13px; text-align: center; }
+    .section-label { font-size: 11px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
 
     .sheet-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); }
 
     .spacer { flex: 1; }
-    .gap-10 { display: flex; flex-direction: column; gap: 10px; }
+    .gap-10 { display: flex; flex-direction: column; gap: 8px; }
     .gap-20 { display: flex; flex-direction: column; gap: 20px; }
     .mb-20 { margin-bottom: 20px; }
     .mb-24 { margin-bottom: 24px; }
@@ -205,124 +199,121 @@
     .screen.active { display: flex; }
 
     /* ═══ CUSTOM SPLIT ═══ */
-    .custom-split-row { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
+    .custom-split-row { display: flex; gap: 10px; align-items: center; margin-top: 12px; }
     .custom-split-input-wrap { flex: 1; text-align: center; }
     .custom-split-input-wrap label { font-size: 12px; color: var(--text-soft); display: block; margin-bottom: 4px; font-weight: 600; }
-    .custom-split-input { width: 100%; text-align: center; padding: 10px 8px; font-size: 16px; font-weight: 600; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; }
-    .custom-split-input:focus { border-color: var(--accent); }
+    .custom-split-input { width: 100%; text-align: center; padding: 10px 8px; font-size: 16px; font-weight: 600; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .custom-split-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
 
     /* ═══ SUMMARY SCREEN ═══ */
-    .summary-sheet-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--accent); background: var(--accent-soft); margin-bottom: 20px; transition: all 0.15s ease; }
+    .summary-sheet-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--blue); font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--blue); background: var(--blue-soft); margin-bottom: 20px; transition: all 0.15s ease; }
     .summary-sheet-link:active { transform: scale(0.98); }
-    .expense-list { display: flex; flex-direction: column; gap: 8px; }
+    .expense-list { display: flex; flex-direction: column; gap: 6px; }
     .expense-item { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); }
-    .expense-item .ei-amount { font-family: var(--font-display); font-size: 17px; font-weight: 600; white-space: nowrap; }
+    .expense-item .ei-amount { font-size: 16px; font-weight: 600; white-space: nowrap; letter-spacing: -0.01em; }
     .expense-item .ei-details { flex: 1; min-width: 0; }
     .expense-item .ei-desc { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .expense-item .ei-meta { font-size: 12px; color: var(--text-soft); margin-top: 2px; }
-    .expense-item .ei-split-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+    .expense-item .ei-split-tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; white-space: nowrap; }
     .summary-empty { text-align: center; padding: 40px 20px; color: var(--text-soft); }
-    .summary-empty .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .summary-empty .empty-icon { font-size: 36px; margin-bottom: 12px; }
     .summary-empty p { font-size: 14px; line-height: 1.5; }
 
     /* ═══ SWIPE HINT ═══ */
-    .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-soft); font-size: 12px; margin-top: 16px; opacity: 0.6; }
+    .swipe-hint { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--text-soft); font-size: 12px; margin-top: 16px; opacity: 0.5; }
 
     /* ═══ BADGE ═══ */
     .card-badge-wrap { position: relative; flex: 1; }
-    .badge { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--accent); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 6px; z-index: 2; box-shadow: 0 2px 6px rgba(232,97,140,0.3); }
-    .badge.pulse { animation: badgePulse 1.5s ease-in-out infinite; }
-    @keyframes badgePulse { 0%, 100% { transform: scale(1); box-shadow: 0 2px 6px rgba(232,97,140,0.3); } 50% { transform: scale(1.15); box-shadow: 0 2px 12px rgba(232,97,140,0.5); } }
+    .badge { position: absolute; top: -5px; right: -5px; min-width: 20px; height: 20px; border-radius: 10px; background: var(--blue); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 6px; z-index: 2; box-shadow: 0 2px 6px rgba(99,91,255,0.3); }
+    .badge.pulse { animation: badgePulse 2s ease-in-out infinite; }
+    @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
     /* ═══ TASKS ═══ */
     .task-filters { display: flex; gap: 6px; margin-bottom: 16px; }
-    .task-filter-btn { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-soft); transition: all 0.15s; }
+    .task-filter-btn { padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-soft); transition: all 0.15s; }
     .task-filter-btn.active { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
 
-    .task-list { display: flex; flex-direction: column; gap: 8px; padding-bottom: 80px; }
-    .task-item { display: flex; align-items: flex-start; gap: 12px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); transition: all 0.2s; }
-    .task-item.overdue { border-color: var(--accent); animation: taskOverdue 2s ease-in-out infinite; }
-    @keyframes taskOverdue { 0%, 100% { border-color: var(--accent); box-shadow: 0 2px 12px rgba(232,97,140,0.08); } 50% { border-color: #F2749C; box-shadow: 0 2px 16px rgba(232,97,140,0.2); } }
-    .task-item.completed { opacity: 0.5; }
+    .task-list { display: flex; flex-direction: column; gap: 6px; padding-bottom: 80px; }
+    .task-item { display: flex; align-items: flex-start; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); transition: all 0.15s; }
+    .task-item.overdue { border-color: #FCA5A5; background: #FFF5F5; }
+    .task-item.completed { opacity: 0.45; }
     .task-item.completed .task-name { text-decoration: line-through; }
 
-    .task-checkbox { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); margin-top: 2px; }
+    .task-checkbox { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; margin-top: 2px; }
     .task-checkbox:active { transform: scale(0.85); }
-    .task-checkbox.checked { background: var(--green); border-color: var(--green); animation: checkBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .task-checkbox.checked { background: var(--green); border-color: var(--green); }
     .task-checkbox.checked svg { display: block; }
     .task-checkbox svg { display: none; }
 
     .task-content { flex: 1; min-width: 0; }
-    .task-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .task-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .task-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .task-meta { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
     .task-deadline { font-size: 12px; color: var(--text-soft); }
-    .task-deadline.overdue { color: var(--accent); font-weight: 600; }
-    .task-assignee { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .task-deadline.overdue { color: #DC2626; font-weight: 600; }
+    .task-assignee { font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
     .task-assignee.connor { background: var(--accent-soft); color: var(--accent); }
     .task-assignee.spencer { background: var(--blue-soft); color: var(--blue); }
     .task-assignee.both { background: var(--purple-soft); color: var(--purple); }
-    .task-priority { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-    .task-priority.low { background: #F0F0F0; color: #888; }
+    .task-priority { font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+    .task-priority.low { background: #F3F4F6; color: #6B7280; }
     .task-priority.medium { background: var(--blue-soft); color: var(--blue); }
-    .task-priority.high { background: var(--accent-soft); color: var(--accent); }
+    .task-priority.high { background: #FEF2F2; color: #DC2626; }
     .task-notes { font-size: 12px; color: var(--text-soft); margin-top: 4px; line-height: 1.4; }
 
-    .fab { position: fixed; bottom: max(24px, env(safe-area-inset-bottom, 24px)); right: 50%; transform: translateX(calc(210px - 28px)); width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; border: none; box-shadow: 0 6px 20px rgba(107,141,214,0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); animation: fabPulse 3s ease-in-out infinite; }
-    .fab:active { transform: translateX(calc(210px - 28px)) scale(0.9); animation: none; }
+    .fab { position: fixed; bottom: max(24px, env(safe-area-inset-bottom, 24px)); right: 50%; transform: translateX(calc(210px - 28px)); width: 52px; height: 52px; border-radius: 16px; background: var(--blue); color: white; border: none; box-shadow: 0 4px 16px rgba(99,91,255,0.35); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.15s ease; }
+    .fab:active { transform: translateX(calc(210px - 28px)) scale(0.92); }
 
     .show-completed-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; color: var(--text-soft); font-size: 13px; cursor: pointer; border: none; background: none; font-family: var(--font); width: 100%; }
 
     /* ═══ NEW TASK FORM ═══ */
     .form-group { margin-bottom: 20px; }
-    .form-label { font-size: 13px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
-    .form-input { width: 100%; padding: 14px 16px; font-size: 15px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; }
-    .form-input:focus { border-color: var(--blue); }
-    .form-textarea { width: 100%; padding: 14px 16px; font-size: 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s; resize: vertical; min-height: 80px; }
-    .form-textarea:focus { border-color: var(--blue); }
-    .assign-toggle { display: flex; gap: 8px; }
-    .assign-btn { flex: 1; padding: 12px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; color: var(--text); }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; display: block; }
+    .form-input { width: 100%; padding: 12px 14px; font-size: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .form-textarea { width: 100%; padding: 12px 14px; font-size: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); font-family: var(--font); outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; min-height: 80px; }
+    .form-textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .assign-toggle { display: flex; gap: 6px; }
+    .assign-btn { flex: 1; padding: 11px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text-soft); }
     .assign-btn:active { transform: scale(0.98); }
     .assign-btn.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
-    .priority-toggle { display: flex; gap: 8px; }
-    .priority-btn { flex: 1; padding: 12px 8px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; color: var(--text); }
+    .priority-toggle { display: flex; gap: 6px; }
+    .priority-btn { flex: 1; padding: 11px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.15s; color: var(--text-soft); }
     .priority-btn:active { transform: scale(0.98); }
     .priority-btn.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
-    .notify-row { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
-    .notify-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); background: var(--card); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .notify-row { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+    .notify-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); background: var(--card); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
     .notify-checkbox.checked { background: var(--blue); border-color: var(--blue); }
     .notify-label { font-size: 14px; font-weight: 500; }
 
     /* ═══ GROCERY LIST ═══ */
     .grocery-add-row { display: flex; gap: 0; margin-bottom: 20px; }
-    .grocery-store-select { padding: 14px 12px; font-size: 13px; font-weight: 600; border: 1.5px solid var(--border); border-left: none; background: var(--card); font-family: var(--font); outline: none; color: var(--text); cursor: pointer; -webkit-appearance: none; }
-    .grocery-add-btn { padding: 14px 18px; background: linear-gradient(135deg, var(--green), #5EC4A0); color: white; border: none; border-radius: 0 14px 14px 0; font-size: 20px; font-weight: 700; cursor: pointer; font-family: var(--font); transition: all 0.2s; }
-    .grocery-add-btn:active { transform: scale(0.95); }
+    .grocery-store-select { padding: 12px 10px; font-size: 13px; font-weight: 600; border: 1px solid var(--border); border-left: none; background: var(--card); font-family: var(--font); outline: none; color: var(--text); cursor: pointer; -webkit-appearance: none; }
+    .grocery-add-btn { padding: 12px 18px; background: var(--green); color: white; border: none; border-radius: 0 10px 10px 0; font-size: 20px; font-weight: 700; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+    .grocery-add-btn:active { filter: brightness(0.9); }
     .grocery-section { margin-bottom: 20px; }
-    .grocery-section-header { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .grocery-section-header { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
     .grocery-list { display: flex; flex-direction: column; gap: 4px; }
-    .grocery-item { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
-    .grocery-item:active { transform: scale(0.97); }
+    .grocery-item { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; transition: all 0.15s ease; cursor: pointer; }
+    .grocery-item:active { transform: scale(0.98); }
     .grocery-item.checked { opacity: 0.4; }
     .grocery-item.checked .grocery-name { text-decoration: line-through; }
-    .grocery-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .grocery-item.checked .grocery-check { background: var(--green); border-color: var(--green); animation: checkBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .grocery-name { flex: 1; font-size: 15px; font-weight: 500; }
-    .grocery-delete { background: none; border: none; color: var(--text-soft); opacity: 0.4; cursor: pointer; padding: 4px; font-size: 16px; transition: opacity 0.15s; }
+    .grocery-check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+    .grocery-item.checked .grocery-check { background: var(--green); border-color: var(--green); }
+    .grocery-name { flex: 1; font-size: 14px; font-weight: 500; }
+    .grocery-delete { background: none; border: none; color: var(--text-soft); opacity: 0.3; cursor: pointer; padding: 4px; font-size: 14px; transition: opacity 0.15s; }
     .grocery-delete:active { opacity: 1; }
     .grocery-empty { text-align: center; padding: 16px; color: var(--text-soft); font-size: 13px; }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.2); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes checkBounce { 0% { transform: scale(1); } 30% { transform: scale(1.3); } 50% { transform: scale(0.9); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
-    @keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } 60% { transform: scale(1); } }
-    @keyframes fabPulse { 0%, 100% { box-shadow: 0 4px 16px rgba(107,141,214,0.35); } 50% { box-shadow: 0 6px 24px rgba(107,141,214,0.5); } }
-    .gap-10 > *:nth-child(1) { animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s both; }
-    .gap-10 > *:nth-child(2) { animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s both; }
-    .gap-10 > *:nth-child(3) { animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.19s both; }
-    .gap-10 > *:nth-child(4) { animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.26s both; }
-    .gap-10 > *:nth-child(5) { animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.33s both; }
-    .title-heart { display: inline-block; font-size: 20px; animation: heartbeat 2s ease-in-out infinite; vertical-align: middle; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes checkBounce { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    .gap-10 > *:nth-child(1) { animation: slideUp 0.25s ease 0.03s both; }
+    .gap-10 > *:nth-child(2) { animation: slideUp 0.25s ease 0.06s both; }
+    .gap-10 > *:nth-child(3) { animation: slideUp 0.25s ease 0.09s both; }
+    .gap-10 > *:nth-child(4) { animation: slideUp 0.25s ease 0.12s both; }
+    .gap-10 > *:nth-child(5) { animation: slideUp 0.25s ease 0.15s both; }
+    .title-gradient { background: linear-gradient(135deg, var(--blue), var(--purple), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     input[type=number] { -moz-appearance: textfield; }
   </style>
@@ -334,16 +325,31 @@
     <!-- ═══ HOME ═══ -->
     <div class="screen active" id="screen-home">
       <div class="header">
-        <div class="header-left"><h1>Boo HQ <span class="title-heart">💗</span></h1></div>
+        <div class="header-left"><h1 class="title-gradient">Boo HQ</h1></div>
         <button class="btn-icon muted" onclick="showScreen('settings')" aria-label="Settings">
           <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.32 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
       </div>
-      <div id="home-warning"></div>
+      <!-- At-a-glance balance -->
+      <div id="home-balance-preview" style="display:none"></div>
+      <!-- Quick Actions — promoted to home -->
+      <div id="home-quick-actions" style="display:none" class="mb-24">
+        <div class="section-label">Quick Actions</div>
+        <div class="gap-10">
+          <button class="quick-card quick-costco" onclick="startAmount('costco')">
+            <div class="icon-box"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg></div>
+            <div><div class="card-title">Costco Run</div><div class="card-sub">Logs to Mom + 80/20 Boo Bills</div></div>
+          </button>
+          <button class="quick-card quick-cdy" onclick="startAmount('cdy')">
+            <div class="icon-box"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"/></svg></div>
+            <div><div class="card-title">CDY Personal Charge</div><div class="card-sub">Paid by Connor · 80/20 split</div></div>
+          </button>
+        </div>
+      </div>
       <div class="gap-10 mb-24">
         <button class="expense-card" onclick="showScreen('bills')">
           <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div style="flex:1"><div class="card-title">Bills</div><div class="card-sub">Boo Bills, Mom Bills & Quick Actions</div></div>
+          <div style="flex:1"><div class="card-title">Bills</div><div class="card-sub">Boo Bills, Mom Bills & more</div></div>
           <div class="chevron"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></div>
         </button>
         <div class="card-badge-wrap" id="tasks-badge-wrap">
@@ -364,6 +370,8 @@
         <div class="section-label">Outstanding Tasks</div>
         <div id="home-tasks-list"></div>
       </div>
+      <div class="spacer"></div>
+      <div id="home-warning" style="margin-top:20px"></div>
     </div>
 
     <!-- ═══ BILLS HUB ═══ -->
@@ -703,12 +711,92 @@
     var cachedTasks = null, taskFilter = 'all', showCompleted = false;
     var taskAssign = 'Connor', taskPriority = 'Medium', taskNotify = false;
 
+    // ═══ SMART CACHE (stale-while-revalidate) ═══
+    var dataCache = { booExpenses: null, booExpensesTime: 0, momBalances: null, momBalancesTime: 0, tasks: null, tasksTime: 0 };
+    var CACHE_TTL = 60000; // 1 minute — show cached data instantly, refresh in background
+    var pendingFetches = {};
+
+    function getCached(key) {
+      if (dataCache[key] && (Date.now() - dataCache[key + 'Time']) < CACHE_TTL) return dataCache[key];
+      return null;
+    }
+    function setCached(key, data) {
+      dataCache[key] = data;
+      dataCache[key + 'Time'] = Date.now();
+    }
+
+    function fetchWithCache(key, url, callback) {
+      var cached = getCached(key);
+      if (cached) {
+        callback(cached, true); // true = from cache, refresh in background
+        if ((Date.now() - dataCache[key + 'Time']) < CACHE_TTL / 2) return; // very fresh, skip refresh
+      }
+      // Deduplicate in-flight requests
+      if (pendingFetches[key]) {
+        pendingFetches[key].push(callback);
+        return;
+      }
+      pendingFetches[key] = cached ? [] : [callback];
+
+      var cbName = 'bb_' + key + '_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      var timeout = setTimeout(function() {
+        delete window[cbName];
+        var cbs = pendingFetches[key] || [];
+        delete pendingFetches[key];
+        cbs.forEach(function(cb) { cb(null); });
+      }, 8000);
+
+      window[cbName] = function(data) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        setCached(key, data);
+        var cbs = pendingFetches[key] || [];
+        delete pendingFetches[key];
+        cbs.forEach(function(cb) { cb(data, false); });
+        // Also update any stale callback that already got cache
+        if (cached) callback(data, false);
+      };
+
+      var s = document.createElement('script');
+      s.src = url + '&callback=' + cbName;
+      s.onerror = function() {
+        clearTimeout(timeout); delete window[cbName];
+        var cbs = pendingFetches[key] || [];
+        delete pendingFetches[key];
+        cbs.forEach(function(cb) { cb(null); });
+      };
+      document.head.appendChild(s);
+      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 10000);
+    }
+
     function init() {
       try { scriptUrl = localStorage.getItem('boobills_script_url') || ''; sheetUrl = localStorage.getItem('boobills_sheet_url') || ''; } catch(e) {}
       updateHomeWarning();
       initSwipeGesture();
-      updateHomeBadges();
+      // Preload all data on startup so screens load instantly
+      if (scriptUrl) {
+        preloadAllData();
+      }
       renderHomeOutstandingTasks();
+    }
+
+    function preloadAllData() {
+      // Preload expenses (used for boo balance + summary)
+      fetchWithCache('booExpenses', scriptUrl + '?action=expenses&sheet=Boo+Bills', function(data) {
+        if (data) renderHomeBalance(data);
+      });
+      // Preload tasks (used for badges + tasks screen)
+      fetchWithCache('tasks', scriptUrl + '?action=tasks', function(data) {
+        if (data && data.tasks) {
+          cachedTasks = data;
+          updateHomeBadgesFromData(data);
+          renderHomeOutstandingTasks(data);
+        }
+      });
+      // Preload mom balances
+      fetchWithCache('momBalances', scriptUrl + '?action=balances', function(data) {
+        if (data) cachedBalances = data;
+      });
     }
 
     // ═══ SWIPE GESTURE ═══
@@ -764,28 +852,43 @@
       startAmount('boobills', 'Custom ' + label);
     }
 
+    // ═══ HOME BALANCE PREVIEW ═══
+    function renderHomeBalance(data) {
+      var container = document.getElementById('home-balance-preview');
+      if (!data || !data.expenses) { container.style.display = 'none'; return; }
+      var spencerOwesConnor = 0, connorOwesSpencer = 0;
+      for (var i = 0; i < data.expenses.length; i++) {
+        var e = data.expenses[i];
+        var pb = (e.paidBy || '').trim();
+        var co = parseFloat(e.connorOwes) || 0;
+        var so = parseFloat(e.spencerOwes) || 0;
+        if (pb === 'Connor') spencerOwesConnor += so;
+        else if (pb === 'Spencer') connorOwesSpencer += co;
+      }
+      var net = Math.round((spencerOwesConnor - connorOwesSpencer) * 100) / 100;
+      var netClass = net > 0 ? 'positive' : (net < 0 ? 'negative' : 'zero');
+      var netLabel = net > 0 ? 'Spencer owes Connor' : (net < 0 ? 'Connor owes Spencer' : 'All settled up!');
+      var netVal = Math.abs(net);
+      container.style.display = 'block';
+      container.innerHTML =
+        '<div class="balance-card" style="cursor:pointer" onclick="showScreen(\'summary\')">' +
+          '<div class="balance-header"><span class="balance-title">Boo Bills Balance</span><span style="font-size:12px;color:var(--text-soft)">Tap for details →</span></div>' +
+          '<div class="balance-net ' + netClass + '">' +
+            '<span class="net-label">' + netLabel + '</span>' +
+            '<span class="net-val">' + (net === 0 ? '✓' : fmt(netVal)) + '</span>' +
+          '</div>' +
+        '</div>';
+      // Show quick actions when script URL is set
+      document.getElementById('home-quick-actions').style.display = 'block';
+    }
+
     // ═══ BALANCE FETCHING (JSONP) ═══
     function fetchBalances(callback) {
       if (!scriptUrl) { callback(null); return; }
-      var cbName = 'bbcb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() {
-        delete window[cbName];
-        callback(null);
-      }, 8000);
-
-      window[cbName] = function(data) {
-        clearTimeout(timeout);
-        delete window[cbName];
-        cachedBalances = data;
+      fetchWithCache('momBalances', scriptUrl + '?action=balances', function(data) {
+        if (data) cachedBalances = data;
         callback(data);
-      };
-
-      var s = document.createElement('script');
-      s.src = scriptUrl + '?action=balances&callback=' + cbName;
-      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; callback(null); };
-      document.head.appendChild(s);
-      // Clean up script tag
-      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 10000);
+      });
     }
 
     function renderBooBalance(container, data) {
@@ -839,12 +942,14 @@
     }
 
     function refreshBooBalance() {
+      dataCache.booExpenses = null; dataCache.booExpensesTime = 0; // force fresh fetch
       var el = document.getElementById('boo-balance');
       el.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
       fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(el, data); });
     }
 
     function refreshMomBalance() {
+      dataCache.momBalances = null; dataCache.momBalancesTime = 0;
       var el = document.getElementById('mom-balance');
       el.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
       fetchBalances(function(data) { renderMomBalance(el, data); });
@@ -858,7 +963,15 @@
         document.getElementById('settings-script-url').value = scriptUrl;
         document.getElementById('settings-sheet-url').value = sheetUrl;
       }
-      if (name === 'home') { updateHomeWarning(); updateHomeBadges(); renderHomeOutstandingTasks(); }
+      if (name === 'home') {
+        updateHomeWarning();
+        updateHomeBadges();
+        renderHomeOutstandingTasks();
+        document.getElementById('home-quick-actions').style.display = scriptUrl ? 'block' : 'none';
+        // Show cached balance instantly
+        var cachedExp = getCached('booExpenses');
+        if (cachedExp) renderHomeBalance(cachedExp);
+      }
       if (name === 'bills') { updateHomeSheetLink(); }
       if (name === 'tasks') { fetchTasks(); }
       if (name === 'groceries') { renderGroceryList(); }
@@ -884,11 +997,21 @@
       if (name === 'summary') {
         updateSummarySheetLink();
         var balEl = document.getElementById('summary-balance');
+        var expEl = document.getElementById('summary-expenses');
         if (scriptUrl) {
           balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
-          fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(balEl, data); });
+          expEl.innerHTML = '<div class="balance-loading">Loading expenses<span class="dots"></span></div>';
+          // Single fetch for both balance + expense list (same endpoint, deduplicated by cache)
+          fetchWithCache('booExpenses', scriptUrl + '?action=expenses&sheet=Boo+Bills', function(data) {
+            if (data) {
+              renderBooBalanceFromExpenses(balEl, data);
+              renderExpenses(expEl, data);
+            } else {
+              balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Could not load balance</div></div>';
+              expEl.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load. Tap refresh to try again.</p></div>';
+            }
+          });
         } else { balEl.innerHTML = ''; }
-        fetchExpenses();
       }
     }
 
@@ -935,8 +1058,16 @@
 
     function resetApp() {
       expenseType = null; splitType = null; paidBy = 'Connor';
-      cachedBalances = null; // force re-fetch next time
+      // Invalidate expense cache so balance refreshes, but keep tasks/mom cached
+      dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
+      cachedBalances = null;
       showScreen('home');
+      // Re-fetch balance for home preview
+      if (scriptUrl) {
+        fetchWithCache('booExpenses', scriptUrl + '?action=expenses&sheet=Boo+Bills', function(data) {
+          if (data) renderHomeBalance(data);
+        });
+      }
     }
 
     function updatePreview() {
@@ -1011,6 +1142,9 @@
       sheetUrl = document.getElementById('settings-sheet-url').value.trim();
       try { localStorage.setItem('boobills_script_url', scriptUrl); localStorage.setItem('boobills_sheet_url', sheetUrl); } catch(e) {}
       cachedBalances = null;
+      // Reset all caches and preload with new URL
+      dataCache = { booExpenses: null, booExpensesTime: 0, momBalances: null, momBalancesTime: 0, tasks: null, tasksTime: 0 };
+      if (scriptUrl) preloadAllData();
       showScreen('home');
     }
 
@@ -1026,21 +1160,9 @@
     // ═══ CALCULATE BOO BALANCE FROM EXPENSES ═══
     function fetchExpensesForBalance(callback) {
       if (!scriptUrl) { callback(null); return; }
-      var cbName = 'bbbal_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() {
-        delete window[cbName];
-        callback(null);
-      }, 10000);
-      window[cbName] = function(data) {
-        clearTimeout(timeout);
-        delete window[cbName];
+      fetchWithCache('booExpenses', scriptUrl + '?action=expenses&sheet=Boo+Bills', function(data) {
         callback(data);
-      };
-      var s = document.createElement('script');
-      s.src = scriptUrl + '?action=expenses&sheet=Boo+Bills&callback=' + cbName;
-      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; callback(null); };
-      document.head.appendChild(s);
-      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+      });
     }
 
     function renderBooBalanceFromExpenses(container, data) {
@@ -1103,23 +1225,10 @@
       if (!scriptUrl) { container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚙️</div><p>Set your Apps Script URL in settings to view expenses.</p></div>'; return; }
       container.innerHTML = '<div class="balance-loading">Loading expenses<span class="dots"></span></div>';
 
-      var cbName = 'bbexp_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() {
-        delete window[cbName];
-        container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⏱</div><p>Timed out loading expenses. Tap refresh to try again.</p></div>';
-      }, 10000);
-
-      window[cbName] = function(data) {
-        clearTimeout(timeout);
-        delete window[cbName];
-        renderExpenses(container, data);
-      };
-
-      var s = document.createElement('script');
-      s.src = scriptUrl + '?action=expenses&sheet=Boo+Bills&callback=' + cbName;
-      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load expenses. Your Apps Script may need updating to support the expenses endpoint.</p></div>'; };
-      document.head.appendChild(s);
-      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+      fetchWithCache('booExpenses', scriptUrl + '?action=expenses&sheet=Boo+Bills', function(data) {
+        if (data) renderExpenses(container, data);
+        else container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load expenses. Tap refresh to try again.</p></div>';
+      });
     }
 
     function renderExpenses(container, data) {
@@ -1151,48 +1260,44 @@
     }
 
     function refreshSummary() {
-      var balEl = document.getElementById('summary-balance');
-      balEl.innerHTML = '<div class="balance-card"><div class="balance-loading">Loading balance<span class="dots"></span></div></div>';
-      fetchExpensesForBalance(function(data) { renderBooBalanceFromExpenses(balEl, data); });
-      fetchExpenses();
+      // Invalidate cache to force fresh fetch
+      dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
+      showScreen('summary');
     }
 
     // ═══ TASKS ═══
     function updateHomeBadges() {
       if (!scriptUrl) return;
-      var cbName = 'bbtasks_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() { delete window[cbName]; }, 10000);
-      window[cbName] = function(data) {
-        clearTimeout(timeout);
-        delete window[cbName];
-        if (!data || !data.tasks) return;
-        cachedTasks = data;
-        var today = new Date(); today.setHours(0,0,0,0);
-        var outstanding = 0, overdueCount = 0;
-        for (var i = 0; i < data.tasks.length; i++) {
-          var t = data.tasks[i];
-          if (t.status === 'Complete') continue;
-          outstanding++;
-          if (t.deadline) {
-            var dl = new Date(t.deadline); dl.setHours(0,0,0,0);
-            if (dl < today) overdueCount++;
-          }
+      fetchWithCache('tasks', scriptUrl + '?action=tasks', function(data) {
+        if (data && data.tasks) {
+          cachedTasks = data;
+          updateHomeBadgesFromData(data);
+          renderHomeOutstandingTasks(data);
         }
-        var badge = document.getElementById('tasks-badge');
-        if (outstanding > 0) {
-          badge.textContent = outstanding;
-          badge.style.display = 'flex';
-          badge.className = overdueCount > 0 ? 'badge pulse' : 'badge';
-        } else {
-          badge.style.display = 'none';
+      });
+    }
+
+    function updateHomeBadgesFromData(data) {
+      if (!data || !data.tasks) return;
+      var today = new Date(); today.setHours(0,0,0,0);
+      var outstanding = 0, overdueCount = 0;
+      for (var i = 0; i < data.tasks.length; i++) {
+        var t = data.tasks[i];
+        if (t.status === 'Complete') continue;
+        outstanding++;
+        if (t.deadline) {
+          var dl = new Date(t.deadline); dl.setHours(0,0,0,0);
+          if (dl < today) overdueCount++;
         }
-        renderHomeOutstandingTasks(data);
-      };
-      var s = document.createElement('script');
-      s.src = scriptUrl + '?action=tasks&callback=' + cbName;
-      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; };
-      document.head.appendChild(s);
-      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+      }
+      var badge = document.getElementById('tasks-badge');
+      if (outstanding > 0) {
+        badge.textContent = outstanding;
+        badge.style.display = 'flex';
+        badge.className = overdueCount > 0 ? 'badge pulse' : 'badge';
+      } else {
+        badge.style.display = 'none';
+      }
     }
 
     function renderHomeOutstandingTasks(data) {
@@ -1263,19 +1368,15 @@
       var container = document.getElementById('tasks-list');
       if (!scriptUrl) { container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚙️</div><p>Set your Apps Script URL in settings to use tasks.</p></div>'; return; }
       container.innerHTML = '<div class="balance-loading">Loading tasks<span class="dots"></span></div>';
-      var cbName = 'bbtl_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() { delete window[cbName]; container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⏱</div><p>Timed out. Tap to try again.</p></div>'; }, 10000);
-      window[cbName] = function(data) {
-        clearTimeout(timeout);
-        delete window[cbName];
-        cachedTasks = data;
-        renderTasks(container, data);
-      };
-      var s = document.createElement('script');
-      s.src = scriptUrl + '?action=tasks&callback=' + cbName;
-      s.onerror = function() { clearTimeout(timeout); delete window[cbName]; container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load tasks. Your Apps Script may need updating.</p></div>'; };
-      document.head.appendChild(s);
-      setTimeout(function() { try { document.head.removeChild(s); } catch(e) {} }, 12000);
+
+      fetchWithCache('tasks', scriptUrl + '?action=tasks', function(data) {
+        if (data) {
+          cachedTasks = data;
+          renderTasks(container, data);
+        } else {
+          container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load tasks. Tap to try again.</p></div>';
+        }
+      });
     }
 
     function renderTasks(container, data) {
@@ -1381,7 +1482,8 @@
         }
         renderTasks(document.getElementById('tasks-list'), cachedTasks);
       }
-      // POST to backend
+      // POST to backend, invalidate cache after
+      dataCache.tasks = null; dataCache.tasksTime = 0;
       fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'completeTask', taskId: id })
       });
@@ -1453,6 +1555,7 @@
       fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(taskData) })
       .then(function() {
         cachedTasks = null;
+        dataCache.tasks = null; dataCache.tasksTime = 0;
         document.getElementById('task-success-msg').textContent = '"' + name + '" assigned to ' + taskAssign + (deadline ? ' · Due ' + deadline : '');
         showScreen('task-success');
         setTimeout(spawnConfetti, 100);
