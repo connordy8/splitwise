@@ -785,14 +785,8 @@
       fetchWithCache('booExpenses', scriptUrl + '?action=expenses&sheet=Boo+Bills', function(data) {
         if (data) renderHomeBalance(data);
       });
-      // Preload tasks (used for badges + tasks screen)
-      fetchWithCache('tasks', scriptUrl + '?action=tasks', function(data) {
-        if (data && data.tasks) {
-          cachedTasks = data;
-          updateHomeBadgesFromData(data);
-          renderHomeOutstandingTasks(data);
-        }
-      });
+      // Tasks are localStorage — load instantly
+      updateHomeBadges();
       // Preload mom balances
       fetchWithCache('momBalances', scriptUrl + '?action=balances', function(data) {
         if (data) cachedBalances = data;
@@ -1265,16 +1259,20 @@
       showScreen('summary');
     }
 
-    // ═══ TASKS ═══
+    // ═══ TASKS (localStorage) ═══
+    function getLocalTasks() {
+      try { return JSON.parse(localStorage.getItem('boohq_tasks') || '[]'); } catch(e) { return []; }
+    }
+    function saveLocalTasks(tasks) {
+      try { localStorage.setItem('boohq_tasks', JSON.stringify(tasks)); } catch(e) {}
+    }
+
     function updateHomeBadges() {
-      if (!scriptUrl) return;
-      fetchWithCache('tasks', scriptUrl + '?action=tasks', function(data) {
-        if (data && data.tasks) {
-          cachedTasks = data;
-          updateHomeBadgesFromData(data);
-          renderHomeOutstandingTasks(data);
-        }
-      });
+      var tasks = getLocalTasks();
+      var data = { tasks: tasks };
+      cachedTasks = data;
+      updateHomeBadgesFromData(data);
+      renderHomeOutstandingTasks(data);
     }
 
     function updateHomeBadgesFromData(data) {
@@ -1301,12 +1299,11 @@
     }
 
     function renderHomeOutstandingTasks(data) {
-      data = data || cachedTasks;
+      data = data || cachedTasks || { tasks: getLocalTasks() };
       var container = document.getElementById('home-tasks-list');
       var section = document.getElementById('home-outstanding-tasks');
-      if (!data || !data.tasks) {
-        if (!scriptUrl) { section.style.display = 'none'; return; }
-        container.innerHTML = '<div style="color:var(--text-soft);font-size:14px;padding:8px 0">Loading...</div>';
+      if (!data || !data.tasks || data.tasks.length === 0) {
+        section.style.display = 'none';
         return;
       }
       var today = new Date(); today.setHours(0,0,0,0);
@@ -1366,17 +1363,9 @@
 
     function fetchTasks() {
       var container = document.getElementById('tasks-list');
-      if (!scriptUrl) { container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚙️</div><p>Set your Apps Script URL in settings to use tasks.</p></div>'; return; }
-      container.innerHTML = '<div class="balance-loading">Loading tasks<span class="dots"></span></div>';
-
-      fetchWithCache('tasks', scriptUrl + '?action=tasks', function(data) {
-        if (data) {
-          cachedTasks = data;
-          renderTasks(container, data);
-        } else {
-          container.innerHTML = '<div class="summary-empty"><div class="empty-icon">⚠️</div><p>Failed to load tasks. Tap to try again.</p></div>';
-        }
-      });
+      var tasks = getLocalTasks();
+      cachedTasks = { tasks: tasks };
+      renderTasks(container, cachedTasks);
     }
 
     function renderTasks(container, data) {
@@ -1470,23 +1459,18 @@
     }
 
     function completeTask(id) {
-      if (!scriptUrl || !id) return;
-      // Optimistically update UI
-      if (cachedTasks && cachedTasks.tasks) {
-        for (var i = 0; i < cachedTasks.tasks.length; i++) {
-          if (cachedTasks.tasks[i].id === id) {
-            cachedTasks.tasks[i].status = 'Complete';
-            cachedTasks.tasks[i].completedDate = new Date().toLocaleDateString('en-US');
-            break;
-          }
+      if (!id) return;
+      var tasks = getLocalTasks();
+      for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].id === id) {
+          tasks[i].status = 'Complete';
+          tasks[i].completedDate = new Date().toLocaleDateString('en-US');
+          break;
         }
-        renderTasks(document.getElementById('tasks-list'), cachedTasks);
       }
-      // POST to backend, invalidate cache after
-      dataCache.tasks = null; dataCache.tasksTime = 0;
-      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'completeTask', taskId: id })
-      });
+      saveLocalTasks(tasks);
+      cachedTasks = { tasks: tasks };
+      renderTasks(document.getElementById('tasks-list'), cachedTasks);
     }
 
     // ═══ NEW TASK FORM ═══
@@ -1533,35 +1517,25 @@
       var errorArea = document.getElementById('task-error-area');
 
       if (!name) { errorArea.innerHTML = '<p class="error-msg">Please enter a task name</p>'; return; }
-      if (!scriptUrl) { errorArea.innerHTML = '<p class="error-msg">Set your Apps Script URL in settings first</p>'; return; }
 
-      var btn = document.getElementById('task-submit-btn');
-      btn.disabled = true; btn.textContent = 'Creating...'; errorArea.innerHTML = '';
-
-      // Determine creator (we assume the person using the app — we'll use a simple heuristic based on who's NOT assigned, or default to Connor)
-      var createdBy = 'Connor'; // Default — could be made configurable in settings
-
-      var taskData = {
-        action: 'addTask',
+      var tasks = getLocalTasks();
+      tasks.push({
+        id: 'task_' + Date.now() + '_' + Math.floor(Math.random() * 10000),
         task: name,
         assignedTo: taskAssign,
-        createdBy: createdBy,
+        createdBy: 'Connor',
         deadline: deadline || '',
         priority: taskPriority,
         notes: notes,
-        notifyOnComplete: taskNotify
-      };
+        status: 'Open',
+        createdDate: new Date().toLocaleDateString('en-US')
+      });
+      saveLocalTasks(tasks);
+      cachedTasks = { tasks: tasks };
 
-      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(taskData) })
-      .then(function() {
-        cachedTasks = null;
-        dataCache.tasks = null; dataCache.tasksTime = 0;
-        document.getElementById('task-success-msg').textContent = '"' + name + '" assigned to ' + taskAssign + (deadline ? ' · Due ' + deadline : '');
-        showScreen('task-success');
-        setTimeout(spawnConfetti, 100);
-      }).catch(function() {
-        errorArea.innerHTML = '<p class="error-msg">Failed to create task. Check your connection.</p>';
-      }).finally(function() { btn.disabled = false; btn.textContent = 'Create Task'; });
+      document.getElementById('task-success-msg').textContent = '"' + name + '" assigned to ' + taskAssign + (deadline ? ' · Due ' + deadline : '');
+      showScreen('task-success');
+      setTimeout(spawnConfetti, 100);
     }
 
     // ═══ GROCERY LIST ═══
@@ -1662,6 +1636,11 @@
     function fmt(n) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n); }
 
     init();
+
+    // Register service worker for home screen cache updates
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function() {});
+    }
   </script>
 </body>
 </html>
