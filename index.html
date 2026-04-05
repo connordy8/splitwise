@@ -335,20 +335,6 @@
       </div>
       <!-- At-a-glance balance -->
       <div id="home-balance-preview" style="display:none"></div>
-      <!-- Quick Actions — promoted to home -->
-      <div id="home-quick-actions" style="display:none" class="mb-24">
-        <div class="section-label">Quick Actions</div>
-        <div class="gap-10">
-          <button class="quick-card quick-costco" onclick="startAmount('costco')">
-            <div class="icon-box"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg></div>
-            <div><div class="card-title">Costco Run</div><div class="card-sub">Logs to Mom + 80/20 Boo Bills</div></div>
-          </button>
-          <button class="quick-card quick-cdy" onclick="startAmount('cdy')">
-            <div class="icon-box"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"/></svg></div>
-            <div><div class="card-title">CDY Personal Charge</div><div class="card-sub">Paid by Connor · 80/20 split</div></div>
-          </button>
-        </div>
-      </div>
       <div class="gap-10 mb-24">
         <button class="expense-card" onclick="showScreen('bills')">
           <div class="icon-box" style="background:var(--accent-soft);color:var(--accent)"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
@@ -374,6 +360,19 @@
         <div id="home-tasks-list"></div>
       </div>
       <div class="spacer"></div>
+      <div id="home-quick-actions" style="display:none;margin-top:20px">
+        <div class="section-label">Quick Actions</div>
+        <div class="gap-10">
+          <button class="quick-card quick-costco" onclick="startAmount('costco')">
+            <div class="icon-box"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg></div>
+            <div><div class="card-title">Costco Run</div><div class="card-sub">Logs to Mom + 80/20 Boo Bills</div></div>
+          </button>
+          <button class="quick-card quick-cdy" onclick="startAmount('cdy')">
+            <div class="icon-box"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"/></svg></div>
+            <div><div class="card-title">CDY Personal Charge</div><div class="card-sub">Paid by Connor · 80/20 split</div></div>
+          </button>
+        </div>
+      </div>
       <div id="home-warning" style="margin-top:20px"></div>
     </div>
 
