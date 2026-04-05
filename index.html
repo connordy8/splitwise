@@ -181,8 +181,6 @@
     .setup-box .setup-title { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 8px; }
     .setup-box ol { font-size: 12px; color: var(--blue); margin: 0; padding-left: 16px; line-height: 1.7; }
 
-    .warning-box { background: #FFFBEB; border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border: 1px solid #FDE68A; }
-    .warning-box p { font-size: 13px; color: #92400E; line-height: 1.4; }
 
     .error-msg { color: #DC2626; font-size: 13px; text-align: center; }
     .section-label { font-size: 11px; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
@@ -328,23 +326,6 @@
     .action-todo .action-icon { background: var(--purple-soft); color: var(--purple); }
     .action-grocery .action-icon { background: var(--green-soft); color: var(--green); }
 
-    /* ═══ TAB BAR ═══ */
-    .tab-bar {
-      display: flex; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 420px;
-      background: var(--card); border-top: 1px solid var(--border);
-      padding: 6px 0; padding-bottom: max(6px, env(safe-area-inset-bottom, 6px));
-      z-index: 20;
-    }
-    .tab {
-      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
-      padding: 6px 0; background: none; border: none; cursor: pointer;
-      font-family: var(--font); font-size: 11px; font-weight: 600;
-      color: var(--text-soft); transition: color 0.15s;
-    }
-    .tab.active { color: var(--blue); }
-    .tab:active { opacity: 0.7; }
-    .tab-bar-spacer { height: 64px; } /* prevents content from hiding behind tab bar */
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
@@ -408,8 +389,6 @@
         <div class="badge pulse" id="tasks-badge" style="display:none">0</div>
       </div>
 
-      <div id="home-warning"></div>
-      <div class="tab-bar-spacer"></div>
     </div>
 
     <!-- ═══ LOG EXPENSE ═══ -->
@@ -611,7 +590,6 @@
         <div class="balance-loading">Loading tasks<span class="dots"></span></div>
       </div>
       <button class="show-completed-toggle" id="show-completed-btn" onclick="toggleShowCompleted()">Show completed tasks</button>
-      <div class="tab-bar-spacer"></div>
       <button class="fab" onclick="showScreen('task-new')">
         <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
       </button>
@@ -706,7 +684,6 @@
         <div id="grocery-wholefoods-list" class="grocery-list"></div>
       </div>
       <button class="show-completed-toggle" id="grocery-clear-btn" onclick="clearCheckedGroceries()" style="display:none;color:var(--accent)">Clear checked items</button>
-      <div class="tab-bar-spacer"></div>
     </div>
 
     <!-- ═══ SETTINGS ═══ -->
@@ -742,21 +719,6 @@
       </div>
     </div>
 
-    <!-- ═══ TAB BAR ═══ -->
-    <div class="tab-bar" id="tab-bar">
-      <button class="tab active" id="tab-home" onclick="showScreen('home')">
-        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
-        <span>Home</span>
-      </button>
-      <button class="tab" id="tab-tasks" onclick="showScreen('tasks')">
-        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9l2 2 4-4"/></svg>
-        <span>Tasks</span>
-      </button>
-      <button class="tab" id="tab-groceries" onclick="showScreen('groceries')">
-        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-8 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
-        <span>Groceries</span>
-      </button>
-    </div>
   </div>
 
   <script>
@@ -827,7 +789,6 @@
 
     function init() {
       try { scriptUrl = localStorage.getItem('boobills_script_url') || ''; sheetUrl = localStorage.getItem('boobills_sheet_url') || ''; } catch(e) {}
-      updateHomeWarning();
       initSwipeGesture();
       // Preload all data on startup so screens load instantly
       if (scriptUrl) {
@@ -1009,20 +970,11 @@
     function showScreen(name) {
       document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
       document.getElementById('screen-' + name).classList.add('active');
-      // Tab bar: show on main screens, hide on sub-screens
-      var tabScreens = ['home', 'tasks', 'groceries'];
-      var tabBar = document.getElementById('tab-bar');
-      tabBar.style.display = tabScreens.indexOf(name) >= 0 ? 'flex' : 'none';
-      // Highlight active tab
-      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-      var activeTab = document.getElementById('tab-' + name);
-      if (activeTab) activeTab.classList.add('active');
       if (name === 'settings') {
         document.getElementById('settings-script-url').value = scriptUrl;
         document.getElementById('settings-sheet-url').value = sheetUrl;
       }
       if (name === 'home') {
-        updateHomeWarning();
         updateHomeBadges();
         renderHomeOutstandingTasks();
         // balance preview uses cached data
@@ -1206,10 +1158,6 @@
       showScreen('home');
     }
 
-    function updateHomeWarning() {
-      var el = document.getElementById('home-warning');
-      el.innerHTML = scriptUrl ? '' : '<div class="warning-box"><span style="font-size:18px">⚙️</span><p>Tap the settings icon to connect your Google Sheet.</p></div>';
-    }
     function updateHomeSheetLink() {
       var el = document.getElementById('home-sheet-link');
       el.innerHTML = sheetUrl ? '<a class="sheet-link" href="' + sheetUrl + '" target="_blank" rel="noopener noreferrer">View Google Sheet <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a>' : '';
