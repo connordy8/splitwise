@@ -57,6 +57,10 @@
 
     .btn-secondary { display: flex; align-items: center; justify-content: center; gap: 6px; background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 20px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); text-decoration: none; transition: all 0.15s ease; box-shadow: var(--shadow); }
     .btn-secondary:active { transform: scale(0.98); background: var(--bg); }
+    .btn-danger { background: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; border-radius: var(--radius-sm); padding: 14px 20px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); width: 100%; transition: all 0.15s ease; }
+    .btn-danger:hover { background: #FECACA; }
+    .btn-danger:active { transform: scale(0.98); }
+    .btn-danger:disabled { opacity: 0.6; cursor: wait; }
 
     .expense-card { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; cursor: pointer; width: 100%; text-align: left; box-shadow: var(--shadow); transition: all 0.2s ease; }
     .expense-card:active { transform: scale(0.98); }
@@ -210,7 +214,10 @@
     .summary-sheet-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--blue); font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--blue); background: var(--blue-soft); margin-bottom: 20px; transition: all 0.15s ease; }
     .summary-sheet-link:active { transform: scale(0.98); }
     .expense-list { display: flex; flex-direction: column; gap: 6px; }
-    .expense-item { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); }
+    .expense-item { display: flex; align-items: center; gap: 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow); width: 100%; text-align: left; font-family: var(--font); cursor: pointer; transition: all 0.15s ease; }
+    .expense-item:active { transform: scale(0.99); background: var(--bg); }
+    @media (hover: hover) { .expense-item:hover { border-color: #D1D5DB; box-shadow: var(--shadow-lg); } }
+    .expense-item .ei-edit-hint { color: var(--text-soft); opacity: 0.35; flex-shrink: 0; }
     .expense-item .ei-amount { font-size: 16px; font-weight: 600; white-space: nowrap; letter-spacing: -0.01em; }
     .expense-item .ei-details { flex: 1; min-width: 0; }
     .expense-item .ei-desc { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -448,6 +455,45 @@
       <div id="summary-expenses">
         <div class="balance-loading">Loading expenses<span class="dots"></span></div>
       </div>
+    </div>
+
+    <!-- ═══ EDIT EXPENSE ═══ -->
+    <div class="screen" id="screen-edit-expense">
+      <div class="header">
+        <div class="header-left">
+          <button class="btn-icon" onclick="showScreen('summary')"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+          <h1 class="small">Edit Expense</h1>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <input type="text" id="edit-desc-input" class="form-input" placeholder="What was it for?">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount</label>
+        <input type="number" inputmode="decimal" id="edit-amount-input" class="form-input" placeholder="0.00" step="0.01" oninput="updateEditPreview()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Paid by</label>
+        <div class="paid-by-toggle">
+          <button class="paid-by-btn" id="edit-paidby-connor" onclick="setEditPaidBy('Connor')">Connor</button>
+          <button class="paid-by-btn" id="edit-paidby-spencer" onclick="setEditPaidBy('Spencer')">Spencer</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Split type</label>
+        <div class="gap-10">
+          <button class="split-option" id="edit-split-8020" onclick="setEditSplit('80/20')"><div class="radio"></div><div><div class="opt-title">80 / 20 Split</div><div class="opt-sub">Connor 80% · Spencer 20%</div></div></button>
+          <button class="split-option" id="edit-split-5050" onclick="setEditSplit('50/50')"><div class="radio"></div><div><div class="opt-title">50 / 50 Split</div><div class="opt-sub">Even split</div></div></button>
+          <button class="split-option" id="edit-split-cos" onclick="setEditSplit('Connor owes Spencer')"><div class="radio"></div><div><div class="opt-title">Connor owes Spencer 100%</div><div class="opt-sub">Connor pays the full amount</div></div></button>
+          <button class="split-option" id="edit-split-soc" onclick="setEditSplit('Spencer owes Connor')"><div class="radio"></div><div><div class="opt-title">Spencer owes Connor 100%</div><div class="opt-sub">Spencer pays the full amount</div></div></button>
+        </div>
+      </div>
+      <div id="edit-preview-area" style="margin-bottom:12px"></div>
+      <div id="edit-error-area"></div>
+      <button class="btn-primary" id="edit-save-btn" onclick="saveExpenseEdit()">Save Changes</button>
+      <div style="height:10px"></div>
+      <button class="btn-danger" id="edit-delete-btn" onclick="deleteExpense()">Delete Expense</button>
     </div>
 
     <!-- ═══ BOO BILLS ═══ -->
@@ -1242,6 +1288,8 @@
         container.innerHTML = '<div class="summary-empty"><div class="empty-icon">📋</div><p>No expenses yet. Start logging to see them here!</p></div>';
         return;
       }
+      // Stash the expense list for edit lookups
+      window._summaryExpenses = data.expenses;
       var html = '<div class="expense-list">';
       var expenses = data.expenses;
       for (var i = 0; i < expenses.length; i++) {
@@ -1250,7 +1298,7 @@
         if (e.splitType && e.splitType.indexOf('Connor owes') >= 0) tagColor = 'tag-green';
         else if (e.splitType && e.splitType.indexOf('Spencer owes') >= 0) tagColor = 'tag-purple';
 
-        html += '<div class="expense-item">' +
+        html += '<button class="expense-item" onclick="openEditExpense(' + i + ')">' +
           '<div>' +
             '<div class="ei-amount">' + fmt(e.amount || 0) + '</div>' +
           '</div>' +
@@ -1259,7 +1307,8 @@
             '<div class="ei-meta">' + escHtml(e.date || '') + ' · Paid by ' + escHtml(e.paidBy || '?') + '</div>' +
           '</div>' +
           '<div class="ei-split-tag tag ' + tagColor + '">' + escHtml(e.splitType || '') + '</div>' +
-        '</div>';
+          '<svg class="ei-edit-hint" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>' +
+        '</button>';
       }
       html += '</div>';
       container.innerHTML = html;
@@ -1269,6 +1318,125 @@
       // Invalidate cache to force fresh fetch
       dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
       showScreen('summary');
+    }
+
+    // ═══ EDIT EXPENSE ═══
+    var editingExpense = null; // { row, paidBy, splitType, ... }
+
+    function openEditExpense(idx) {
+      var list = window._summaryExpenses || [];
+      var e = list[idx];
+      if (!e) return;
+      editingExpense = {
+        row: e.row || e.rowIndex || null,
+        idx: idx,
+        paidBy: e.paidBy || 'Connor',
+        splitType: e.splitType || '80/20',
+        date: e.date || ''
+      };
+      document.getElementById('edit-desc-input').value = e.description || '';
+      document.getElementById('edit-amount-input').value = e.amount || '';
+      document.getElementById('edit-error-area').innerHTML = '';
+      setEditPaidBy(editingExpense.paidBy);
+      setEditSplit(editingExpense.splitType);
+      showScreen('edit-expense');
+    }
+
+    function setEditPaidBy(who) {
+      editingExpense.paidBy = who;
+      document.getElementById('edit-paidby-connor').className = 'paid-by-btn' + (who === 'Connor' ? ' selected' : '');
+      document.getElementById('edit-paidby-spencer').className = 'paid-by-btn' + (who === 'Spencer' ? ' selected' : '');
+      updateEditPreview();
+    }
+
+    function setEditSplit(split) {
+      editingExpense.splitType = split;
+      var map = { '80/20': 'edit-split-8020', '50/50': 'edit-split-5050', 'Connor owes Spencer': 'edit-split-cos', 'Spencer owes Connor': 'edit-split-soc' };
+      Object.keys(map).forEach(function(k) {
+        var el = document.getElementById(map[k]);
+        if (el) el.className = 'split-option' + (k === split ? ' selected' : '');
+        var radio = el ? el.querySelector('.radio') : null;
+        if (radio) radio.style.borderColor = (k === split) ? 'var(--blue)' : 'var(--border)';
+        if (radio) radio.style.background = (k === split) ? 'var(--blue)' : 'transparent';
+      });
+      updateEditPreview();
+    }
+
+    function updateEditPreview() {
+      var val = parseFloat(document.getElementById('edit-amount-input').value);
+      var area = document.getElementById('edit-preview-area');
+      if (!val || val <= 0 || !editingExpense) { area.innerHTML = ''; return; }
+      var s = editingExpense.splitType, c = 0, sp = 0;
+      if (s === '80/20') { c = val * 0.8; sp = val * 0.2; }
+      else if (s === '50/50') { c = val * 0.5; sp = val * 0.5; }
+      else if (s === 'Connor owes Spencer') { c = val; sp = 0; }
+      else if (s === 'Spencer owes Connor') { c = 0; sp = val; }
+      area.innerHTML = '<div class="preview-split"><div class="person"><div class="label">Connor</div><div class="value">' + fmt(c) + '</div></div><div class="divider"></div><div class="person"><div class="label">Spencer</div><div class="value">' + fmt(sp) + '</div></div></div>';
+    }
+
+    function saveExpenseEdit() {
+      if (!editingExpense) return;
+      var val = parseFloat(document.getElementById('edit-amount-input').value);
+      var desc = document.getElementById('edit-desc-input').value.trim();
+      var err = document.getElementById('edit-error-area');
+      err.innerHTML = '';
+      if (!val || val <= 0) { err.innerHTML = '<p class="error-msg">Please enter a valid amount</p>'; return; }
+      if (!editingExpense.row) {
+        err.innerHTML = '<p class="error-msg">This expense is missing a row ID. Update your Apps Script to return it (see settings).</p>';
+        return;
+      }
+      var s = editingExpense.splitType, cOwes = 0, spOwes = 0;
+      if (s === '80/20') { cOwes = +(val * 0.8).toFixed(2); spOwes = +(val * 0.2).toFixed(2); }
+      else if (s === '50/50') { cOwes = +(val * 0.5).toFixed(2); spOwes = +(val * 0.5).toFixed(2); }
+      else if (s === 'Connor owes Spencer') { cOwes = val; spOwes = 0; }
+      else if (s === 'Spencer owes Connor') { cOwes = 0; spOwes = val; }
+
+      var btn = document.getElementById('edit-save-btn');
+      btn.disabled = true; btn.textContent = 'Saving...';
+
+      var payload = {
+        action: 'update',
+        sheet: 'Boo Bills',
+        row: editingExpense.row,
+        date: editingExpense.date,
+        description: desc || 'Expense',
+        amount: val,
+        paidBy: editingExpense.paidBy,
+        splitType: s,
+        connorOwes: cOwes,
+        spencerOwes: spOwes
+      };
+
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      .then(function() {
+        dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
+        cachedBalances = null;
+        showScreen('summary');
+      }).catch(function() {
+        err.innerHTML = '<p class="error-msg">Failed to save. Check your Apps Script.</p>';
+      }).finally(function() { btn.disabled = false; btn.textContent = 'Save Changes'; });
+    }
+
+    function deleteExpense() {
+      if (!editingExpense) return;
+      if (!editingExpense.row) {
+        document.getElementById('edit-error-area').innerHTML = '<p class="error-msg">This expense is missing a row ID. Update your Apps Script to return it.</p>';
+        return;
+      }
+      if (!confirm('Delete this expense? This cannot be undone.')) return;
+
+      var btn = document.getElementById('edit-delete-btn');
+      btn.disabled = true; btn.textContent = 'Deleting...';
+      var err = document.getElementById('edit-error-area');
+
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', sheet: 'Boo Bills', row: editingExpense.row }) })
+      .then(function() {
+        dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
+        cachedBalances = null;
+        showScreen('summary');
+      }).catch(function() {
+        err.innerHTML = '<p class="error-msg">Failed to delete. Check your Apps Script.</p>';
+      }).finally(function() { btn.disabled = false; btn.textContent = 'Delete Expense'; });
     }
 
     // ═══ TASKS (localStorage) ═══
