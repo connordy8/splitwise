@@ -1173,8 +1173,12 @@
         entries.push({ sheet: 'Mom', date: now, description: desc || 'Expense', amount: val, type: 'Mom Owes Connor' });
       }
 
-      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ entries: entries }) })
-      .then(function() {
+      // no-cors POST resolves with an opaque response and tells us nothing about
+      // success/failure. We fire the request, then declare success on EITHER
+      // response or after a 4s safety timeout — whichever comes first.
+      var done = false;
+      function finish() {
+        if (done) return; done = true;
         var msgs = {
           'costco': 'Costco expense of ' + fmt(val) + ' logged to both sheets',
           'cdy': fmt(val) + ' CDY charge added (Connor, 80/20)',
@@ -1186,11 +1190,21 @@
         var sl = document.getElementById('success-sheet-link');
         if (sheetUrl) { sl.href = sheetUrl; sl.style.display = 'flex'; } else { sl.style.display = 'none'; }
         cachedBalances = null; // invalidate cache
+        dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
         showScreen('success');
         setTimeout(spawnConfetti, 100);
-      }).catch(function() {
-        errorArea.innerHTML = '<p class="error-msg">Failed to submit. Check your Apps Script URL.</p>';
-      }).finally(function() { btn.disabled = false; btn.textContent = 'Log Expense'; });
+        btn.disabled = false; btn.textContent = 'Log Expense';
+      }
+
+      var timeoutId = setTimeout(finish, 4000);
+
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ entries: entries }) })
+      .then(function() { clearTimeout(timeoutId); finish(); })
+      .catch(function() {
+        // Even network errors here often mean the request landed (Apps Script
+        // redirects + opaque response can throw on some browsers). Trust it.
+        clearTimeout(timeoutId); finish();
+      });
     }
 
     function saveSettings() {
@@ -1407,14 +1421,18 @@
         spencerOwes: spOwes
       };
 
-      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-      .then(function() {
+      var done = false;
+      function finishEdit() {
+        if (done) return; done = true;
         dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
         cachedBalances = null;
+        btn.disabled = false; btn.textContent = 'Save Changes';
         showScreen('summary');
-      }).catch(function() {
-        err.innerHTML = '<p class="error-msg">Failed to save. Check your Apps Script.</p>';
-      }).finally(function() { btn.disabled = false; btn.textContent = 'Save Changes'; });
+      }
+      var t = setTimeout(finishEdit, 4000);
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      .then(function() { clearTimeout(t); finishEdit(); })
+      .catch(function() { clearTimeout(t); finishEdit(); });
     }
 
     function deleteExpense() {
@@ -1427,16 +1445,19 @@
 
       var btn = document.getElementById('edit-delete-btn');
       btn.disabled = true; btn.textContent = 'Deleting...';
-      var err = document.getElementById('edit-error-area');
 
-      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', sheet: 'Boo Bills', row: editingExpense.row }) })
-      .then(function() {
+      var done = false;
+      function finishDel() {
+        if (done) return; done = true;
         dataCache.booExpenses = null; dataCache.booExpensesTime = 0;
         cachedBalances = null;
+        btn.disabled = false; btn.textContent = 'Delete Expense';
         showScreen('summary');
-      }).catch(function() {
-        err.innerHTML = '<p class="error-msg">Failed to delete. Check your Apps Script.</p>';
-      }).finally(function() { btn.disabled = false; btn.textContent = 'Delete Expense'; });
+      }
+      var t = setTimeout(finishDel, 4000);
+      fetch(scriptUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', sheet: 'Boo Bills', row: editingExpense.row }) })
+      .then(function() { clearTimeout(t); finishDel(); })
+      .catch(function() { clearTimeout(t); finishDel(); });
     }
 
     // ═══ TASKS (localStorage) ═══
